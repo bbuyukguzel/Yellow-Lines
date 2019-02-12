@@ -1,85 +1,117 @@
 <template>
-  <v-container>
-    <div class="hello">
-      <v-app id="inspire">
-        <v-stepper v-model="stepper">
+    <v-container>
+        <div class="hello">
+            <v-app id="inspire">
+                <v-stepper v-model="stepper">
 
-          <v-stepper-header>
-            <div class="step" v-for="(step, index) in steps" :key=index>
-              <v-stepper-step
-                      :edit-icon="'check'"
-                      :complete-icon="'edit'"
-                      :step="index + 1"
-                      :complete="(index + 1 ) <= stepper"
-                      :editable="(index + 1) < stepper">{{ step.label }}
-              </v-stepper-step>
-              <v-divider></v-divider>
-            </div>
-          </v-stepper-header>
+                    <v-stepper-header>
+                        <div class="step" v-for="(step, index) in steps" :key=index>
+                            <v-stepper-step
+                                    :edit-icon="'check'"
+                                    :complete-icon="'edit'"
+                                    :step="index + 1"
+                                    :complete="(index + 1 ) <= stepper"
+                                    :editable="(index + 1) < stepper">{{ step.label }}
+                            </v-stepper-step>
+                            <v-divider></v-divider>
+                        </div>
+                    </v-stepper-header>
 
-          <v-stepper-items>
-            <v-stepper-content step="1">
-              <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
-              <v-btn color="primary" @click.native="stepper = 2">Continue</v-btn>
-            </v-stepper-content>
+                    <v-stepper-items>
+                        <v-stepper-content step="1">
+                            <form id="form" method="post" action="https://httpbin.org/post" v-on:submit="validateForm">
+                                <v-text-field
+                                        v-model="targetURL"
+                                        id="targetURL"
+                                        name="targetURL"
+                                        :error-messages="nameErrors"
+                                        label="Name"
+                                        v-on:click="clear"
+                                ></v-text-field>
+                                <v-btn color="primary" type="submit">Continue</v-btn>
 
-            <v-stepper-content step="2">
-              <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
-              <v-btn flat @click.native="stepper = 1">Previous</v-btn>
-              <v-btn color="primary" @click.native="stepper = 3">Continue</v-btn>
-            </v-stepper-content>
+                                <v-btn @click="clear">clear</v-btn>
+                            </form>
+                            <v-btn color="primary" @click.native="stepper = 2">Continue</v-btn>
+                        </v-stepper-content>
 
-            <v-stepper-content step="3">
-              <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
-              <v-btn flat @click.native="stepper = 2">Previous</v-btn>
-              <v-btn color="primary" @click.prevent="submit">Finish</v-btn>
-            </v-stepper-content>
-          </v-stepper-items>
-        </v-stepper>
-      </v-app>
-    </div>
-  </v-container>
+                        <v-stepper-content step="2">
+                            <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
+                            <v-btn flat @click.native="stepper = 1">Previous</v-btn>
+                            <v-btn color="primary" @click.native="stepper = 3">Continue</v-btn>
+                        </v-stepper-content>
+
+                        <v-stepper-content step="3">
+                            <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
+                            <v-btn flat @click.native="stepper = 2">Previous</v-btn>
+                            <v-btn color="primary" @click.prevent="submit">Finish</v-btn>
+                        </v-stepper-content>
+                    </v-stepper-items>
+                </v-stepper>
+            </v-app>
+        </div>
+    </v-container>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-    data() {
-        return {
-            stepper: 0,
-            steps: [
-                {
-                    label: 'Mirror Creation',
-                    completed: false,
-                },
-                {
-                    label: 'Selection',
-                    completed: false,
-                },
-                {
-                    label: 'Details',
-                    completed: false,
-                },
-            ],
+    import {required, url} from 'vuelidate/lib/validators'
+
+    export default {
+        name: 'HelloWorld',
+        validations: {
+            targetURL: {required, url: url},
+        },
+        data() {
+            return {
+                targetURL: '',
+                stepper: 0,
+                steps: [
+                    {
+                        label: 'Mirror Creation',
+                        completed: false,
+                    },
+                    {
+                        label: 'Selection',
+                        completed: false,
+                    },
+                    {
+                        label: 'Details',
+                        completed: false,
+                    },
+                ],
+            }
+        },
+        computed: {
+            nameErrors() {
+                const errors = []
+                if (!this.$v.targetURL.$dirty) return errors
+                !this.$v.targetURL.url && errors.push('Please provide a valid URL')
+                !this.$v.targetURL.required && errors.push('URL is required.')
+                return errors
+            },
+        },
+
+        methods: {
+            validateForm: function (event) {
+                this.$v.$touch()
+                // validation is nok
+                if (this.$v.$invalid) {
+                    event.preventDefault();
+                }
+                // validation is ok
+                else {
+                    // empty for now
+                }
+            },
+            clear() {
+                this.$v.$reset()
+                this.targetURL = ''
+            },
         }
-  }
-}
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>

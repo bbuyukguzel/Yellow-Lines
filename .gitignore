@@ -23,3 +23,5 @@ yarn-error.log*
 temp-layer/venv/
 
 temp-layer/__pycache__/
+
+temp-layer/static/mirrors/

@@ -19,3 +19,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+temp-layer/venv/
+
+temp-layer/__pycache__/

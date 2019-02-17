@@ -19,7 +19,7 @@
 
                     <v-stepper-items>
                         <v-stepper-content step="1">
-                            <form id="form" method="post" action="https://httpbin.org/post" v-on:submit="validateForm">
+                            <form id="form">
                                 <v-text-field
                                         v-model="targetURL"
                                         id="targetURL"
@@ -28,11 +28,8 @@
                                         label="Name"
                                         v-on:click="clear"
                                 ></v-text-field>
-                                <v-btn color="primary" type="submit">Continue</v-btn>
-
-                                <v-btn @click="clear">clear</v-btn>
+                                <v-btn color="primary" @click="validateForm">Continue</v-btn>
                             </form>
-                            <v-btn color="primary" @click.native="stepper = 2">Continue</v-btn>
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
@@ -55,6 +52,7 @@
 
 <script>
     import {required, url} from 'vuelidate/lib/validators'
+    import axios from 'axios'
 
     export default {
         name: 'HelloWorld',
@@ -100,7 +98,16 @@
                 }
                 // validation is ok
                 else {
-                    // empty for now
+                    axios.post('http://localhost:5000/query-example', {
+                        url: this.targetURL,
+                    })
+                        .then((response) => {
+                            console.log(response.data)
+                            this.stepper++
+                        })
+                        .catch(function (error) {
+                            console.log(error)
+                        })
                 }
             },
             clear() {

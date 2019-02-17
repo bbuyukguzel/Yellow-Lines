@@ -27,7 +27,20 @@
                                         :error-messages="nameErrors"
                                         label="Name"
                                         v-on:click="clear"
+                                        :disabled="dialog"
                                 ></v-text-field>
+
+                                <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                                    <v-card color="primary" dark >
+                                        <v-card-text>
+                                            Please stand by
+                                            <v-progress-linear indeterminate color="white" class="mb-0">
+
+                                            </v-progress-linear>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-dialog>
+
                                 <v-btn color="primary" @click="validateForm">Continue</v-btn>
                             </form>
                         </v-stepper-content>
@@ -63,6 +76,7 @@
             return {
                 targetURL: '',
                 stepper: 0,
+                dialog: false,
                 steps: [
                     {
                         label: 'Mirror Creation',
@@ -98,11 +112,13 @@
                 }
                 // validation is ok
                 else {
-                    axios.post('http://localhost:5000/query-example', {
+                    this.dialog = true
+                    axios.post('http://localhost:5000/generate-mirror', {
                         url: this.targetURL,
                     })
                         .then((response) => {
                             console.log(response.data)
+                            this.dialog = false
                             this.stepper++
                         })
                         .catch(function (error) {

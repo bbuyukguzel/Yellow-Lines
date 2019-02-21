@@ -112,16 +112,23 @@
                 }
                 // validation is ok
                 else {
-                    this.dialog = true
-                    axios.post('http://localhost:5000/generate-mirror', {
-                        url: this.targetURL,
+                    this.dialog = true  // open spinner
+
+                    const axiosInstance = axios.create({
+                        baseURL: 'http://localhost:5000',
+                        timeout: 5000,
+                        headers: { 'Authorization': 'Good is the enemy of great' }
                     })
+
+                    axiosInstance.post('/generate-mirror', {url: this.targetURL})
                         .then((response) => {
+                            // server return something
                             console.log(response.data)
                             this.dialog = false
                             this.stepper++
                         })
-                        .catch(function (error) {
+                        .catch((error)  =>  {
+                            this.dialog = false
                             console.log(error)
                         })
                 }

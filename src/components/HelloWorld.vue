@@ -27,17 +27,30 @@
                                         :error-messages="nameErrors"
                                         label="Name"
                                         v-on:click="clear"
-                                        :disabled="dialog"
+                                        :disabled="dialogLoader"
                                 ></v-text-field>
 
-                                <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                                <v-dialog v-model="dialogLoader" width="300">
                                     <v-card color="primary" dark >
                                         <v-card-text>
                                             Please stand by
                                             <v-progress-linear indeterminate color="white" class="mb-0">
-
                                             </v-progress-linear>
                                         </v-card-text>
+                                    </v-card>
+                                </v-dialog>
+
+                                <v-dialog v-model="dialogTimeout" width="300">
+                                    <v-card color="primary" dark >
+                                        <v-card-text>
+                                            Timeout Error: Mirror cannot be generated within 5 seconds
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn @click="dialogTimeout = false" light >
+                                                Close
+                                            </v-btn>
+                                        </v-card-actions>
                                     </v-card>
                                 </v-dialog>
 
@@ -76,7 +89,8 @@
             return {
                 targetURL: '',
                 stepper: 0,
-                dialog: false,
+                dialogLoader: false,
+                dialogTimeout: false,
                 steps: [
                     {
                         label: 'Mirror Creation',
@@ -112,7 +126,7 @@
                 }
                 // validation is ok
                 else {
-                    this.dialog = true  // open spinner
+                    this.dialogLoader = true  // open spinner
 
                     const axiosInstance = axios.create({
                         baseURL: 'http://localhost:5000',
@@ -124,11 +138,12 @@
                         .then((response) => {
                             // server return something
                             console.log(response.data)
-                            this.dialog = false
+                            this.dialogLoader = false
                             this.stepper++
                         })
                         .catch((error)  =>  {
-                            this.dialog = false
+                            this.dialogLoader = false
+                            this.dialogTimeout = true
                             console.log(error)
                         })
                 }

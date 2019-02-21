@@ -4,6 +4,7 @@ import time
 import json
 import subprocess
 from tempfile import NamedTemporaryFile
+from random import randint
 
 app = Flask(__name__) #create the Flask app
 CORS(app)
@@ -14,6 +15,7 @@ puppeteerDIR = '../puppeteer-jobs/generate-mirror.js'
 
 @app.route('/generate-mirror', methods=['GET', 'POST'])
 def generate_mirror():
+    time.sleep(randint(0, 3))   # for chaos
     data = request.data
     dataDict = json.loads(data)
 
@@ -23,7 +25,7 @@ def generate_mirror():
     print(fname, img, dataDict['url'])
     command = 'node {} {} {}'.format(puppeteerDIR, dataDict['url'], fname)
     subprocess.call(command, shell=True)
-    return 'Don\'t Panic.'+img
+    return 'Don\'t Panic. '+img
 
 
 if __name__ == '__main__':

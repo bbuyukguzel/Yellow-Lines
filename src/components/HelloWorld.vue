@@ -2,7 +2,7 @@
     <v-container>
         <div class="hello">
             <v-app id="inspire">
-                <v-stepper v-model="stepper">
+                <v-stepper v-model="stepper"  width="1025px">
 
                     <v-stepper-header>
                         <div class="step" v-for="(step, index) in steps" :key=index>
@@ -59,7 +59,11 @@
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
+                            <v-card class="mb-5" color="grey lighten-1">
+
+                                <v-img v-bind:src=mirrorURL></v-img>
+
+                            </v-card>
                             <v-btn flat @click.native="stepper = 1">Previous</v-btn>
                             <v-btn color="primary" @click.native="stepper = 3">Continue</v-btn>
                         </v-stepper-content>
@@ -88,6 +92,7 @@
         data() {
             return {
                 targetURL: '',
+                mirrorURL: '',
                 stepper: 0,
                 dialogLoader: false,
                 dialogTimeout: false,
@@ -130,7 +135,7 @@
 
                     const axiosInstance = axios.create({
                         baseURL: 'http://localhost:5000',
-                        timeout: 5000,
+                        timeout: 9000,
                         headers: { 'Authorization': 'Good is the enemy of great' }
                     })
 
@@ -139,6 +144,7 @@
                             // server return something
                             console.log(response.data)
                             this.dialogLoader = false
+                            this.mirrorURL = response.data
                             this.stepper++
                         })
                         .catch((error)  =>  {

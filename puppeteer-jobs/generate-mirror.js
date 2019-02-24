@@ -1,6 +1,6 @@
 
 if (process.argv.length < 4 || process.argv.length > 4) {
-    console.log('Wrong argument usage');
+	console.log('Wrong argument usage');
 } 
 else
 {
@@ -9,12 +9,14 @@ else
 	const outputPath = process.argv[3];
 
 	(async () => {
-	  const browser = await puppeteer.launch();
-	  const page = await browser.newPage();
-	  await page.goto(url, { waitUntil: 'load' });
-	  await page.setViewport({width: 1024, height: 768});
-	  await page.screenshot({path: outputPath, fullPage: true});
+		const browser = await puppeteer.launch();
+		const page = await browser.newPage();
+		await page.goto(url, { timeout: 10000, waitUntil: 'networkidle2' });
+		await page.setViewport({width: 1024, height: 768});
+		await page.screenshot({path: outputPath, fullPage: true});
 
-	  await browser.close();
+		await browser.close();
 	})();
 }
+
+

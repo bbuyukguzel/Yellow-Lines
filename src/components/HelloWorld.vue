@@ -144,7 +144,7 @@
                             // server return something
                             console.log(response.data)
                             this.dialogLoader = false
-                            this.mirrorURL = response.data
+                            this.mirrorURL = Object.keys(response.data)[0]
                             this.stepper++
                         })
                         .catch((error)  =>  {

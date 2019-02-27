@@ -129,7 +129,15 @@ else
 			return result;
 		});
 
-		console.log(result);
+		// TODO: save as json for temporary. i dont want to strive for this.
+		jname = outputPath.split('.').slice(0, -1).join('.')
+		var json = JSON.stringify(result);
+		var fs = require('fs');
+		fs.writeFile(jname.concat(".json"), json, 'utf8', (err) => {
+		  if (err) throw err;
+		  //console.log('The file has been saved!');
+		});
+
 		await browser.close();
 	})();
 }

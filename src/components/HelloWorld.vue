@@ -58,15 +58,25 @@
                             </form>
                         </v-stepper-content>
 
+
+                        <div ref="mirrorArea">
                         <v-stepper-content step="2">
                             <v-card class="mb-5" color="grey lighten-1">
-
-                                <v-img v-bind:src=mirrorURL></v-img>
-
+                                <v-img v-bind:src=mirrorURL>
+                                    <div v-for="items in response">
+                                        <div v-for="(f, index) in items" v-bind:key=index>
+                                        <div class="mirror-element" v-bind:style="{top: f.top + 'px', left: offsetLeft+f.left + 'px', width: f.width + 'px', height: f.height + 'px'}">
+                                        </div>
+                                    </div>
+                                </div>
+                                </v-img>
                             </v-card>
+
                             <v-btn flat @click.native="stepper = 1">Previous</v-btn>
                             <v-btn color="primary" @click.native="stepper = 3">Continue</v-btn>
                         </v-stepper-content>
+                        </div>
+
 
                         <v-stepper-content step="3">
                             <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
@@ -91,11 +101,15 @@
         },
         data() {
             return {
+
                 targetURL: '',
                 mirrorURL: '',
                 stepper: 0,
                 dialogLoader: false,
                 dialogTimeout: false,
+                response: [],
+                offsetTop: 0,
+                offsetLeft: 0,
                 steps: [
                     {
                         label: 'Mirror Creation',
@@ -145,6 +159,7 @@
                             console.log(response.data)
                             this.dialogLoader = false
                             this.mirrorURL = Object.keys(response.data)[0]
+                            this.response = response.data
                             this.stepper++
                         })
                         .catch((error)  =>  {
@@ -152,17 +167,29 @@
                             this.dialogTimeout = true
                             console.log(error)
                         })
+
+
+                    this.offsetTop = this.$refs.mirrorArea.getBoundingClientRect().top
+                    this.offsetLeft = this.$refs.mirrorArea.getBoundingClientRect().left
                 }
             },
             clear() {
                 this.$v.$reset()
                 this.targetURL = ''
             },
-        }
+            calculateOffset() {
+
+            }
+        },
     }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+    .mirror-element{
+        position:absolute
+    }
+    .mirror-element:hover{
+        border:2px solid rgba(215, 40, 40, 0.9)
+    }
 </style>

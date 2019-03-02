@@ -1,8 +1,10 @@
 <template>
-    <v-container>
+    <v-container fluid fill-height>
+        <v-layout row wrap>
+            <v-flex xs8 offset-xs2>
         <div class="hello">
             <v-app id="inspire">
-                <v-stepper v-model="stepper"  width="1025px">
+                <v-stepper v-model="stepper">
 
                     <v-stepper-header>
                         <div class="step" v-for="(step, index) in steps" :key=index>
@@ -62,10 +64,10 @@
                         <div ref="mirrorArea">
                         <v-stepper-content step="2">
                             <v-card class="mb-5" color="grey lighten-1">
-                                <v-img v-bind:src=mirrorURL>
+                                <v-img v-bind:src=mirrorURL style="width:1024px;">
                                     <div v-for="items in response">
                                         <div v-for="(f, index) in items" v-bind:key=index>
-                                        <div class="mirror-element" v-bind:style="{top: f.top + 'px', left: offsetLeft+f.left + 'px', width: f.width + 'px', height: f.height + 'px'}">
+                                        <div class="mirror-element" v-bind:style="{top: f.top + 'px', left: f.left + 'px', width: f.width + 'px', height: f.height + 'px'}">
                                         </div>
                                     </div>
                                 </div>
@@ -87,6 +89,8 @@
                 </v-stepper>
             </v-app>
         </div>
+            </v-flex>
+        </v-layout>
     </v-container>
 </template>
 
@@ -101,15 +105,12 @@
         },
         data() {
             return {
-
                 targetURL: '',
                 mirrorURL: '',
                 stepper: 0,
                 dialogLoader: false,
                 dialogTimeout: false,
                 response: [],
-                offsetTop: 0,
-                offsetLeft: 0,
                 steps: [
                     {
                         label: 'Mirror Creation',
@@ -167,19 +168,12 @@
                             this.dialogTimeout = true
                             console.log(error)
                         })
-
-
-                    this.offsetTop = this.$refs.mirrorArea.getBoundingClientRect().top
-                    this.offsetLeft = this.$refs.mirrorArea.getBoundingClientRect().left
                 }
             },
             clear() {
                 this.$v.$reset()
                 this.targetURL = ''
             },
-            calculateOffset() {
-
-            }
         },
     }
 </script>

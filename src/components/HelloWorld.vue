@@ -65,9 +65,9 @@
                         <v-stepper-content step="2">
                             <v-card class="mb-5" color="grey lighten-1">
                                 <v-img v-bind:src=mirrorURL style="width:1024px;">
-                                    <div v-for="items in response">
-                                        <div v-for="(f, index) in items" v-bind:key=index>
-                                        <div class="mirror-element" @click="selectedDiv" v-bind:id=f.path v-bind:style="{top: f.top + 'px', left: f.left + 'px', width: f.width + 'px', height: f.height + 'px'}">
+                                    <div v-for="(items, itemsIndex) in response" v-bind:key=itemsIndex>
+                                        <div v-for="(element, elementIndex) in items" v-bind:key=elementIndex>
+                                        <div class="mirror-element" @click="selectedDiv" v-bind:id=element.path v-bind:style="{top: element.top + 'px', left: element.left + 'px', width: element.width + 'px', height: element.height + 'px'}">
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +167,10 @@
                         .catch((error)  =>  {
                             this.dialogLoader = false
                             this.dialogTimeout = true
-                            console.log(error)
+                            // TODO: action for exceptions?
+                            /* eslint-disable no-console */
+                            console.log(error);
+                            /* eslint-enable no-console */
                         })
                 }
             },

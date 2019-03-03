@@ -45,7 +45,7 @@
                                 <v-dialog v-model="dialogTimeout" width="300">
                                     <v-card color="primary" dark >
                                         <v-card-text>
-                                            Timeout Error: Mirror cannot be generated within 5 seconds
+                                            Timeout Error: Mirror cannot be generated within {{ timeout }} milliseconds
                                         </v-card-text>
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
@@ -105,6 +105,7 @@
         },
         data() {
             return {
+                timeout: 5000,
                 targetURL: '',
                 mirrorURL: '',
                 stepper: 0,
@@ -151,14 +152,13 @@
 
                     const axiosInstance = axios.create({
                         baseURL: 'http://localhost:5000',
-                        timeout: 9000,
+                        timeout: this.timeout,
                         headers: { 'Authorization': 'Good is the enemy of great' }
                     })
 
                     axiosInstance.post('/generate-mirror', {url: this.targetURL})
                         .then((response) => {
                             // server return something
-                            console.log(response.data)
                             this.dialogLoader = false
                             this.mirrorURL = Object.keys(response.data)[0]
                             this.response = response.data

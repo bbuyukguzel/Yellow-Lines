@@ -67,7 +67,7 @@
                                 <v-img v-bind:src=mirrorURL style="width:1024px;">
                                     <div v-for="items in response">
                                         <div v-for="(f, index) in items" v-bind:key=index>
-                                        <div class="mirror-element" v-bind:style="{top: f.top + 'px', left: f.left + 'px', width: f.width + 'px', height: f.height + 'px'}">
+                                        <div class="mirror-element" @click="selectedDiv" v-bind:id=f.path v-bind:style="{top: f.top + 'px', left: f.left + 'px', width: f.width + 'px', height: f.height + 'px'}">
                                         </div>
                                     </div>
                                 </div>
@@ -111,6 +111,7 @@
                 dialogLoader: false,
                 dialogTimeout: false,
                 response: [],
+                targetId: '',
                 steps: [
                     {
                         label: 'Mirror Creation',
@@ -173,6 +174,9 @@
             clear() {
                 this.$v.$reset()
                 this.targetURL = ''
+            },
+            selectedDiv: function(event) {
+                this.targetId = event.currentTarget.id;
             },
         },
     }

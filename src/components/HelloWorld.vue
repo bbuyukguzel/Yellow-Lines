@@ -2,93 +2,97 @@
     <v-container fluid fill-height>
         <v-layout row wrap>
             <v-flex xs8 offset-xs2>
-        <div class="hello">
-            <v-app id="inspire">
-                <v-stepper v-model="stepper">
+                <div class="hello">
+                    <v-app id="inspire">
+                        <v-stepper v-model="stepper">
 
-                    <v-stepper-header>
-                        <div class="step" v-for="(step, index) in steps" :key=index>
-                            <v-stepper-step
-                                    :edit-icon="'check'"
-                                    :complete-icon="'edit'"
-                                    :step="index + 1"
-                                    :complete="(index + 1 ) <= stepper"
-                                    :editable="(index + 1) < stepper">{{ step.label }}
-                            </v-stepper-step>
-                            <v-divider></v-divider>
-                        </div>
-                    </v-stepper-header>
-
-                    <v-stepper-items>
-                        <v-stepper-content step="1">
-                            <form id="form">
-                                <v-text-field
-                                        v-model="targetURL"
-                                        id="targetURL"
-                                        name="targetURL"
-                                        :error-messages="nameErrors"
-                                        label="Name"
-                                        v-on:click="clear"
-                                        :disabled="dialogLoader"
-                                ></v-text-field>
-
-                                <v-dialog v-model="dialogLoader" width="300">
-                                    <v-card color="primary" dark >
-                                        <v-card-text>
-                                            Please stand by
-                                            <v-progress-linear indeterminate color="white" class="mb-0">
-                                            </v-progress-linear>
-                                        </v-card-text>
-                                    </v-card>
-                                </v-dialog>
-
-                                <v-dialog v-model="dialogTimeout" width="300">
-                                    <v-card color="primary" dark >
-                                        <v-card-text>
-                                            Timeout Error: Mirror cannot be generated within {{ timeout }} milliseconds
-                                        </v-card-text>
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn @click="dialogTimeout = false" light >
-                                                Close
-                                            </v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                </v-dialog>
-
-                                <v-btn color="primary" @click="validateForm">Continue</v-btn>
-                            </form>
-                        </v-stepper-content>
-
-
-                        <div ref="mirrorArea">
-                        <v-stepper-content step="2">
-                            <v-card class="mb-5" color="grey lighten-1">
-                                <v-img v-bind:src=mirrorURL style="width:1024px;">
-                                    <div v-for="(items, itemsIndex) in response" v-bind:key=itemsIndex>
-                                        <div v-for="(element, elementIndex) in items" v-bind:key=elementIndex>
-                                        <div class="mirror-element" @click="selectedDiv" v-bind:id=element.path v-bind:style="{top: element.top + 'px', left: element.left + 'px', width: element.width + 'px', height: element.height + 'px'}">
-                                        </div>
-                                    </div>
+                            <v-stepper-header>
+                                <div class="step" v-for="(step, index) in steps" :key=index>
+                                    <v-stepper-step
+                                            :edit-icon="'check'"
+                                            :complete-icon="'edit'"
+                                            :step="index + 1"
+                                            :complete="(index + 1 ) <= stepper"
+                                            :editable="(index + 1) < stepper">{{ step.label }}
+                                    </v-stepper-step>
+                                    <v-divider></v-divider>
                                 </div>
-                                </v-img>
-                            </v-card>
+                            </v-stepper-header>
 
-                            <v-btn flat @click.native="stepper = 1">Previous</v-btn>
-                            <v-btn color="primary" @click.native="stepper = 3">Continue</v-btn>
-                        </v-stepper-content>
-                        </div>
+                            <v-stepper-items>
 
+                                <!-- Step 1 -->
+                                <v-stepper-content step="1">
+                                    <form id="form">
+                                        <v-text-field
+                                                v-model="targetURL"
+                                                id="targetURL"
+                                                name="targetURL"
+                                                :error-messages="nameErrors"
+                                                label="Name"
+                                                v-on:click="clear"
+                                                :disabled="dialogLoader"
+                                        ></v-text-field>
 
-                        <v-stepper-content step="3">
-                            <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
-                            <v-btn flat @click.native="stepper = 2">Previous</v-btn>
-                            <v-btn color="primary" @click.prevent="submit">Finish</v-btn>
-                        </v-stepper-content>
-                    </v-stepper-items>
-                </v-stepper>
-            </v-app>
-        </div>
+                                        <v-dialog v-model="dialogLoader" width="300">
+                                            <v-card color="primary" dark>
+                                                <v-card-text>
+                                                    Please stand by
+                                                    <v-progress-linear indeterminate color="white" class="mb-0">
+                                                    </v-progress-linear>
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-dialog>
+
+                                        <v-dialog v-model="dialogTimeout" width="300">
+                                            <v-card color="primary" dark>
+                                                <v-card-text>
+                                                    Timeout Error: Mirror cannot be generated within {{ timeout }}
+                                                    milliseconds
+                                                </v-card-text>
+                                                <v-card-actions>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn @click="dialogTimeout = false" light> Close</v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-dialog>
+
+                                        <v-btn color="primary" @click="validateForm">Continue</v-btn>
+                                    </form>
+                                </v-stepper-content>
+
+                                <!-- Step 2 -->
+                                <div ref="mirrorArea">
+                                    <v-stepper-content step="2">
+                                        <v-card class="mb-5" color="grey lighten-1">
+                                            <v-img v-bind:src=mirrorURL style="width:1024px;">
+                                                <div v-for="(items, itemsIndex) in response" v-bind:key=itemsIndex>
+                                                    <div v-for="(element, elementIndex) in items"
+                                                         v-bind:key=elementIndex>
+                                                        <div class="mirror-element" @click="selectedDiv"
+                                                             v-bind:id=element.path
+                                                             v-bind:style="{top: element.top + 'px', left: element.left + 'px', width: element.width + 'px', height: element.height + 'px'}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </v-img>
+                                        </v-card>
+
+                                        <v-btn flat @click.native="stepper = 1">Previous</v-btn>
+                                        <v-btn color="primary" @click.native="stepper = 3">Continue</v-btn>
+                                    </v-stepper-content>
+                                </div>
+
+                                <!-- Step 3 -->
+                                <v-stepper-content step="3">
+                                    <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
+                                    <v-btn flat @click.native="stepper = 2">Previous</v-btn>
+                                    <v-btn color="primary" @click.prevent="submit">Finish</v-btn>
+                                </v-stepper-content>
+                            </v-stepper-items>
+                        </v-stepper>
+                    </v-app>
+                </div>
             </v-flex>
         </v-layout>
     </v-container>
@@ -105,7 +109,7 @@
         },
         data() {
             return {
-                timeout: 5000,
+                timeout: 25000,
                 targetURL: '',
                 mirrorURL: '',
                 stepper: 0,
@@ -152,8 +156,8 @@
 
                     const axiosInstance = axios.create({
                         baseURL: 'http://localhost:5000',
-                        timeout: this.timeout,
-                        headers: { 'Authorization': 'Good is the enemy of great' }
+                        timeout: 25000,
+                        headers: {'Authorization': 'Good is the enemy of great'}
                     })
 
                     axiosInstance.post('/generate-mirror', {url: this.targetURL})
@@ -164,7 +168,7 @@
                             this.response = response.data
                             this.stepper++
                         })
-                        .catch((error)  =>  {
+                        .catch((error) => {
                             this.dialogLoader = false
                             this.dialogTimeout = true
                             // TODO: action for exceptions?
@@ -178,8 +182,9 @@
                 this.$v.$reset()
                 this.targetURL = ''
             },
-            selectedDiv: function(event) {
+            selectedDiv: function (event) {
                 this.targetId = event.currentTarget.id;
+                console.log()
             },
         },
     }
@@ -187,10 +192,11 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .mirror-element{
-        position:absolute
+    .mirror-element {
+        position: absolute
     }
-    .mirror-element:hover{
-        border:2px solid rgba(215, 40, 40, 0.9)
+
+    .mirror-element:hover {
+        border: 2px solid rgba(215, 40, 40, 0.9)
     }
 </style>

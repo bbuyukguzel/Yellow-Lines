@@ -78,6 +78,16 @@
                                             </v-img>
                                         </v-card>
 
+                                        <v-spacer></v-spacer>
+                                        <vue-query-builder
+                                                :rules="rules"
+                                                :maxDepth="3"
+                                                :labels="labels"
+                                                :styled="styled"
+                                                v-model="query"
+                                        ></vue-query-builder>
+                                        <v-spacer></v-spacer>
+
                                         <v-btn flat @click.native="stepper = 1">Previous</v-btn>
                                         <v-btn color="primary" @click.native="stepper = 3">Continue</v-btn>
                                     </v-stepper-content>
@@ -100,12 +110,16 @@
 
 <script>
     import {required, url} from 'vuelidate/lib/validators'
+    import VueQueryBuilder from 'vue-query-builder'
     import axios from 'axios'
 
     export default {
         name: 'HelloWorld',
         validations: {
             targetURL: {required, url: url},
+        },
+        components: {
+            VueQueryBuilder
         },
         data() {
             return {
@@ -117,6 +131,22 @@
                 dialogTimeout: false,
                 response: [],
                 targetId: '',
+                rules: [
+                    {
+                        type: "text",
+                        id: "vegetable",
+                        label: "Vegetable",
+                    },
+                    {
+                        type: "radio",
+                        id: "fruit",
+                        label: "Fruit",
+                        choices: [
+                            {label: "Apple", value: "apple"},
+                            {label: "Banana", value: "banana"}
+                        ]
+                    },
+                ],
                 steps: [
                     {
                         label: 'Mirror Creation',
@@ -184,7 +214,9 @@
             },
             selectedDiv: function (event) {
                 this.targetId = event.currentTarget.id;
+                /* eslint-disable no-console */
                 console.log()
+                /* eslint-enable no-console */
             },
         },
     }

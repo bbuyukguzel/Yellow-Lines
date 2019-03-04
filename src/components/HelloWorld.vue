@@ -134,18 +134,9 @@
                 rules: [
                     {
                         type: "text",
-                        id: "vegetable",
-                        label: "Vegetable",
-                    },
-                    {
-                        type: "radio",
-                        id: "fruit",
-                        label: "Fruit",
-                        choices: [
-                            {label: "Apple", value: "apple"},
-                            {label: "Banana", value: "banana"}
-                        ]
-                    },
+                        id: "selectedArea",
+                        label: "Text in Selected Area"
+                    }
                 ],
                 steps: [
                     {

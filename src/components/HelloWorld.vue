@@ -93,7 +93,11 @@
 
                                 <!-- Step 3 -->
                                 <v-stepper-content step="3">
-                                    <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
+                                    <v-text-field label="Task Name"></v-text-field>
+                                    <v-select v-bind:items="frequencies" label="Task Frequency"></v-select>
+                                    <v-select v-bind:items="notificationTypes" label="Notification Type"></v-select>
+                                    <v-text-field label="Email"></v-text-field>
+
                                     <v-btn flat @click.native="stepper = 2">Previous</v-btn>
                                     <v-btn color="primary" @click.prevent="submit">Finish</v-btn>
                                 </v-stepper-content>
@@ -130,6 +134,8 @@
                 response: [],
                 targetId: '',
                 query: {},
+                frequencies: ['15m', '30m', '1h', '6h', '12h', '24h'],
+                notificationTypes: [{text: 'Email'}, {text: 'Push Notification (coming soon)', disabled: true}],
                 rules: [
                     {
                         type: "text",

@@ -82,8 +82,6 @@
                                         <vue-query-builder
                                                 :rules="rules"
                                                 :maxDepth="3"
-                                                :labels="labels"
-                                                :styled="styled"
                                                 v-model="query"
                                         ></vue-query-builder>
                                         <v-spacer></v-spacer>
@@ -131,6 +129,7 @@
                 dialogTimeout: false,
                 response: [],
                 targetId: '',
+                query: {},
                 rules: [
                     {
                         type: "text",
@@ -202,6 +201,11 @@
             clear() {
                 this.$v.$reset()
                 this.targetURL = ''
+            },
+            queryToJSON() {
+                /* eslint-disable no-console */
+                console.log(JSON.stringify(this.query, null, 2))
+                /* eslint-enable no-console */
             },
             selectedDiv: function (event) {
                 this.targetId = event.currentTarget.id;

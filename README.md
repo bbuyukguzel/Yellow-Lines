@@ -1,29 +1,10 @@
-# yellow-lines
 
-## Project setup
 ```
-npm install
+What a journey
+So hard to describe
+Your harbour so small
+The ocean so wide
+Spin the wheel, spin the wheel
+Go wherever she spins
+Surrender to this wave that's rolling in
 ```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

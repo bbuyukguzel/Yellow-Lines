@@ -26,19 +26,29 @@
                         <v-list-tile-title>Settings</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
-
-                <li v-if="!isAuthenticated">
-                    <a href="#" @click.prevent="login">Login</a>
-                </li>
-                <li v-if="isAuthenticated">
-                    <a href="#" @click.prevent="logout">Log out</a>
-                </li>
-
             </v-list>
         </v-navigation-drawer>
         <v-toolbar app fixed clipped-left>
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>Yellow Lines</v-toolbar-title>
+
+            <v-spacer/>
+            <v-toolbar-items>
+                <v-btn v-if="!isAuthenticated" flat @click.prevent="login">
+                    <v-icon left dark>person</v-icon>
+                    Sign In
+                </v-btn>
+                <!-- only show if authenticated -->
+                <v-btn v-if="isAuthenticated" to="/profile" flat>
+                    <v-icon left dark>account_circle</v-icon>
+                    Profile
+                </v-btn>
+                <v-btn v-if="isAuthenticated" flat @click.prevent="logout">
+                    <v-icon left dark>exit_to_app</v-icon>
+                    Sign Out
+                </v-btn>
+            </v-toolbar-items>
+
         </v-toolbar>
     </div>
 </template>

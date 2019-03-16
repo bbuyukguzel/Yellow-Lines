@@ -25,3 +25,5 @@ temp-layer/venv/
 temp-layer/__pycache__/
 
 temp-layer/static/mirrors/
+
+auth_config\.json

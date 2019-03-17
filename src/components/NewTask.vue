@@ -2,18 +2,16 @@
     <v-app id="inspire" dark>
         <navigation-component/>
 
-        <v-content>
-            <v-container fluid fill-height>
-                <v-layout justify-center align-center row>
+            <v-container grid-list-xl>
+                <v-layout row wrap>
 
-                    <v-flex xs2 order-md1 order-xs1>
-                        <v-card dark tile flat color="red lighten-1">
-                            <v-card-text>#1</v-card-text>
-                        </v-card>
+                    <!-- TODO: So bad. Just for top margin. -->
+                    <v-flex xs10 offset-xs1 class="my-5">
                     </v-flex>
-
-
-                    <v-flex xs8 order-md2 order-xs2>
+                    <v-flex xs10 offset-xs1 class="my-5">
+                    </v-flex>
+                    
+                    <v-flex xs8 offset-xs2>
                         <v-stepper v-model="stepper">
                             <v-stepper-header>
                                 <div class="step" v-for="(step, index) in steps" :key=index>
@@ -112,17 +110,9 @@
                                 </v-stepper-content>
                             </v-stepper-items>
                         </v-stepper>
-
-
-                    </v-flex>
-                    <v-flex xs2 order-md3 order-xs3>
-                        <v-card dark tile flat color="red darken-1">
-                            <v-card-text>#3</v-card-text>
-                        </v-card>
                     </v-flex>
                 </v-layout>
             </v-container>
-        </v-content>
 
         <footer-component/>
     </v-app>

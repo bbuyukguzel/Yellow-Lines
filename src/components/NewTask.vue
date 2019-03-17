@@ -8,9 +8,7 @@
                     <!-- TODO: So bad. Just for top margin. -->
                     <v-flex xs10 offset-xs1 class="my-5">
                     </v-flex>
-                    <v-flex xs10 offset-xs1 class="my-5">
-                    </v-flex>
-                    
+
                     <v-flex xs8 offset-xs2>
                         <v-stepper v-model="stepper">
                             <v-stepper-header>
@@ -36,7 +34,7 @@
                                                 id="targetURL"
                                                 name="targetURL"
                                                 :error-messages="nameErrors"
-                                                label="Name"
+                                                label="URL"
                                                 v-on:click="clear"
                                                 :disabled="dialogLoader"
                                         ></v-text-field>
@@ -86,11 +84,11 @@
                                         </v-card>
 
                                         <v-spacer></v-spacer>
-                                        <vue-query-builder
+                                        <query-builder-component
                                                 :rules="rules"
                                                 :maxDepth="3"
                                                 v-model="query"
-                                        ></vue-query-builder>
+                                        ></query-builder-component>
                                         <v-spacer></v-spacer>
 
                                         <v-btn flat @click.native="stepper = 1">Previous</v-btn>

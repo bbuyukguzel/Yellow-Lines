@@ -39,7 +39,6 @@
         <v-toolbar app fixed clipped-left>
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>Yellow Lines</v-toolbar-title>
-
             <v-spacer/>
             <v-toolbar-items>
                 <v-btn v-if="!isAuthenticated" flat @click.prevent="login">
@@ -47,7 +46,7 @@
                     Sign In
                 </v-btn>
                 <!-- only show if authenticated -->
-                <v-btn v-if="isAuthenticated" to="/profile" flat>
+                <v-btn v-if="isAuthenticated" flat to="/profile">
                     <v-icon left dark>account_circle</v-icon>
                     Profile
                 </v-btn>

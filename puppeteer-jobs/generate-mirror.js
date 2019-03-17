@@ -12,7 +12,7 @@ else
 		const page = await browser.newPage();
 		// TODO: Should puppeteer job timeout same with axios's timeout?
 		await page.goto(url, { timeout: 100000, waitUntil: 'networkidle2' });
-		await page.setViewport({width: 1024, height: 768});
+		await page.setViewport({width: 1080, height: 1920});
 		await page.screenshot({path: outputPath, fullPage: true});
 
 		const result = await page.evaluate(() => {

@@ -84,11 +84,7 @@
                                         </v-card>
 
                                         <v-spacer></v-spacer>
-                                        <query-builder-component
-                                                :rules="rules"
-                                                :maxDepth="3"
-                                                v-model="query"
-                                        ></query-builder-component>
+                                        <and-or :options="options" :isFirst="isFirst" ref="andOr"></and-or>
                                         <v-spacer></v-spacer>
 
                                         <v-btn flat @click.native="stepper = 1">Previous</v-btn>
@@ -108,6 +104,8 @@
                                 </v-stepper-content>
                             </v-stepper-items>
                         </v-stepper>
+
+                        <and-or :options="options" :isFirst="isFirst" ref="andOr"></and-or>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -118,11 +116,11 @@
 
 <script>
     import {required, url} from 'vuelidate/lib/validators'
-    import VueQueryBuilder from 'vue-query-builder'
     import axios from 'axios'
 
     import Navigation from "@/components/Navigation";
     import Footer from "@/components/Footer";
+    import AndOR from "@/components/AndOR";
 
     export default {
         name: "NewTask",
@@ -132,7 +130,7 @@
         components: {
             'navigation-component': Navigation,
             'footer-component' : Footer,
-            'query-builder-component' : VueQueryBuilder
+            'and-or' : AndOR
         },
         data() {
             return {
@@ -147,13 +145,6 @@
                 query: {},
                 frequencies: ['15m', '30m', '1h', '6h', '12h', '24h'],
                 notificationTypes: [{text: 'Email'}, {text: 'Push Notification (coming soon)', disabled: true}],
-                rules: [
-                    {
-                        type: "text",
-                        id: "selectedArea",
-                        label: "Text in Selected Area"
-                    }
-                ],
                 steps: [
                     {
                         label: 'Mirror Creation',
@@ -168,7 +159,35 @@
                         completed: false,
                     },
                 ],
+
+                options: {
+                    keys: [{
+                        name: 'Choose Key',
+                        id: -99
+                    },{
+                        name: 'Crash Number',
+                        id: 134
+                    },{
+                        name: 'Daily Startup',
+                        id: 256
+                    }],
+                        operators: [{
+                        name: 'Choose Operator',
+                        id: -99
+                    },{
+                        name: 'more',
+                        id: '>'
+                    },{
+                        name: 'equal',
+                        id: '='
+                    },{
+                        name: 'less',
+                        id: '<'
+                    }]
+                },
+                isFirst: true
             }
+
         },
         computed: {
             nameErrors() {

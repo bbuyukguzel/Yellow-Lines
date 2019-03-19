@@ -7,12 +7,13 @@
         <v-chip label :color=" !isAnd ? 'deep-purple lighten-1' : 'deep-purple lighten-4' " @click.prevent="clickOr">Or</v-chip>
       </v-flex>
 
-      <v-flex xs2 offset-xs8>
-        <button v-if="!isFirst" class="btn btn-xs btn-purple pull-right" @click.prevent="deleteSelf()">
-          <i class="fa fa-fw fa-close"></i>
-        </button>
-        <button class="btn btn-xs btn-purple pull-right" @click.prevent="addGroup"> + ( group ) </button>
-        <button class="btn btn-xs btn-purple add-rule pull-right" @click.prevent="addRule"> + add </button>
+      <v-flex xs3 offset-xs7>
+            <v-btn fab small dark color="deep-purple lighten-1" @click.prevent="addRule">
+              <v-icon dark>add_box</v-icon>
+            </v-btn>
+            <v-btn fab small dark color="deep-purple lighten-1" @click.prevent="addGroup">
+              <v-icon dark>add_to_photos</v-icon>
+            </v-btn>
       </v-flex>
       </v-layout>
 

@@ -13,9 +13,9 @@
       <v-text-field label="Value" v-model="value"></v-text-field>
     </div>
 
-    <button class="btn btn-xs btn-purple-outline btn-radius btn-purple-round" @click.prevent="deleteSelf()">
-      <i class="fa fa-fw fa-close"></i>
-    </button>
+    <v-btn fab small dark color="deep-purple lighten-1" @click.prevent="deleteSelf()">
+      <v-icon dark>remove</v-icon>
+    </v-btn>
   </div>
 </template>
 

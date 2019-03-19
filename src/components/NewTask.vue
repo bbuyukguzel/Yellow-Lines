@@ -64,6 +64,9 @@
 
                                         <v-btn color="primary" @click="validateForm">Continue</v-btn>
                                     </form>
+
+                                    <v-spacer></v-spacer>
+                                    <and-or :options="options" :isFirst="isFirst" ref="andOr"></and-or>
                                 </v-stepper-content>
 
                                 <!-- Step 2 -->
@@ -105,7 +108,6 @@
                             </v-stepper-items>
                         </v-stepper>
 
-                        <and-or :options="options" :isFirst="isFirst" ref="andOr"></and-or>
                     </v-flex>
                 </v-layout>
             </v-container>

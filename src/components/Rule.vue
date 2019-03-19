@@ -1,19 +1,16 @@
 <template>
   <div class="form-group and-or-rule col-xs-12">
+
     <div class="col-xs-3">
-
       <v-select v-model="key" :items="options.keys" item-text="name" value="id" label="FIX HERE"></v-select>
-
     </div>
 
     <div class="col-xs-3">
-
         <v-select v-model="operator" :items="options.operators" item-text="name" value="id" label="FIX HERE"></v-select>
     </div>
 
     <div class="col-xs-3">
-      <label class="sr-only">值</label>
-      <input type="text" class="form-control input-sm" v-model="value" placeholder="值">
+      <v-text-field label="Value" v-model="value"></v-text-field>
     </div>
 
     <button class="btn btn-xs btn-purple-outline btn-radius btn-purple-round" @click.prevent="deleteSelf()">
@@ -67,7 +64,8 @@
   .and-or-rule {
     position: relative;
     height: 30px;
-    margin-left: 15px !important;
+    margin-left: 60px !important;
+    margin-bottom: 30px !important;
     padding-left: 0;
   }
 
@@ -77,7 +75,7 @@
     position: absolute;
     left: -1px;
     width: 16px;
-    height: calc(50% + 15px);
+    height: calc(50% + 24px);
     border-color: #c0c5e2;
     border-style: solid;
   }

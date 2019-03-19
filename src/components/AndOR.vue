@@ -1,6 +1,5 @@
 <template>
   <div class="and-or-template col-xs-12" :class="isFirst ? 'and-or-first' : '' ">
-    <div class="form-group and-or-top col-xs-12">
 
       <v-layout row wrap>
       <v-flex xs2>
@@ -16,13 +15,11 @@
         <button class="btn btn-xs btn-purple add-rule pull-right" @click.prevent="addRule"> + add </button>
       </v-flex>
       </v-layout>
-    </div>
 
     <rule
             v-for="(rule, index) in rules" ref="rules"
             :options="options" :key="rule" @delete-rule="deleteRule(index)">
     </rule>
-
     <and-or
             class="and-or-offset col-xs-11"
             v-for="(group, index) in groups" ref="groups"
@@ -155,6 +152,7 @@
     border: 1px solid #6d77b8;
     border-top: 3px solid #d2d6de;
     margin-bottom: 20px;
+    margin-top: 10px;
     /* width: 100%; */
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     border-top-color: #6d77b8;
@@ -173,7 +171,7 @@
   }
 
   .and-or-template:before {
-    top: -18px;
+    top: -19px;
     border-width: 0 0 2px 2px;
   }
 
@@ -198,6 +196,7 @@
   }
 
   .and-or-offset {
-    margin-left: 30px;
+    margin-left: 75px;
   }
+
 </style>

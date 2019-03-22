@@ -1,5 +1,5 @@
 <template>
-    <v-layout and-or-rule row wrap>
+    <v-layout row wrap and-or-rule>
         <v-flex xs3>
             <v-select v-model="key" :items="options.keys" item-text="name" value="id" label="FIX HERE"></v-select>
         </v-flex>
@@ -64,32 +64,27 @@
     .and-or-rule {
         position: relative;
         height: 30px;
-        margin-left: 60px !important;
-        margin-bottom: 30px !important;
+        margin-left: 15px !important;       /* bottom line of and button */
         padding-left: 0;
     }
-
     .and-or-rule:before,
     .and-or-rule:after {
         content: '';
         position: absolute;
         left: -1px;
         width: 16px;
-        height: calc(50% + 24px);
+        height: calc(50% + 15px);
         border-color: #c0c5e2;
         border-style: solid;
     }
-
     .and-or-rule:before {
         top: -15px;
         border-width: 0 0 2px 2px;
     }
-
     .and-or-rule:after {
         top: 50%;
         border-width: 0 0 0 2px;
     }
-
     .and-or-rule:last-child:after {
         border: none;
     }

@@ -1,19 +1,19 @@
 <template>
-    <v-layout row wrap and-or-rule>
-        <v-flex xs3>
+    <v-layout row and-or-rule>
+        <v-flex class="pa-0">
             <v-select v-model="key" :items="options.keys" item-text="name" value="id" label="FIX HERE"></v-select>
         </v-flex>
 
-        <v-flex xs3>
+        <v-flex class="pa-0">
             <v-select v-model="operator" :items="options.operators" item-text="name" value="id"
                       label="FIX HERE"></v-select>
         </v-flex>
 
-        <v-flex xs3>
+        <v-flex class="pa-0">
             <v-text-field label="Value" v-model="value"></v-text-field>
         </v-flex>
 
-        <v-btn fab small dark color="deep-purple lighten-1" @click.prevent="deleteSelf()">
+        <v-btn fab  class="pa-0" small dark color="deep-purple lighten-1" @click.prevent="deleteSelf()">
             <v-icon dark>remove</v-icon>
         </v-btn>
     </v-layout>
@@ -65,20 +65,21 @@
         position: relative;
         height: 30px;
         margin-left: 15px !important;       /* bottom line of and button */
+        margin-bottom: 10px !important;
         padding-left: 0;
     }
     .and-or-rule:before,
     .and-or-rule:after {
         content: '';
         position: absolute;
-        left: -1px;
+        left: -10px;
         width: 16px;
-        height: calc(50% + 15px);
+        height: calc(50% + 20px);
         border-color: #c0c5e2;
         border-style: solid;
     }
     .and-or-rule:before {
-        top: -15px;
+        top: -3px;
         border-width: 0 0 2px 2px;
     }
     .and-or-rule:after {

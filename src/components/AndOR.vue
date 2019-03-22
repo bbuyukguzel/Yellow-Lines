@@ -1,38 +1,42 @@
 <template>
     <div class="and-or-template" :class="isFirst ? 'and-or-first' : '' ">
-        <v-layout row justify-space-between>
-            <v-flex xs2 class="text-sm-left">
-                <v-chip small label :color=" isAnd ? 'deep-purple lighten-1' : 'deep-purple lighten-4' "
-                        @click.prevent="clickAnd">And
-                </v-chip>
-                <v-chip small label :color=" !isAnd ? 'deep-purple lighten-1' : 'deep-purple lighten-4' "
-                        @click.prevent="clickOr">Or
-                </v-chip>
-            </v-flex>
+        <div class="and-or-top">
+            <v-container fluid>
+                <v-layout row>
+                    <v-flex xs2 class="text-sm-left pa-0">
+                        <v-chip small label :color=" isAnd ? 'deep-purple lighten-1' : 'deep-purple lighten-4' "
+                                @click.prevent="clickAnd">And
+                        </v-chip>
+                        <v-chip small label :color=" !isAnd ? 'deep-purple lighten-1' : 'deep-purple lighten-4' "
+                                @click.prevent="clickOr">Or
+                        </v-chip>
+                    </v-flex>
+                    <v-flex xs7 class="text-sm-right"></v-flex>
+                    <v-flex xs3 class="text-sm-right pa-0">
+                        <v-chip small label color="deep-purple lighten-1" @click.prevent="addRule">
+                            +add
+                        </v-chip>
+                        <v-chip small label color="deep-purple lighten-1" @click.prevent="addGroup">
+                            +add(group)
+                        </v-chip>
+                    </v-flex>
+                </v-layout>
 
-            <v-flex xs3 class="text-sm-right">
-                <v-chip small label color="deep-purple lighten-1" @click.prevent="addRule">
-                    +add
-                </v-chip>
-                <v-chip small label color="deep-purple lighten-1" @click.prevent="addGroup">
-                    +add(group)
-                </v-chip>
-            </v-flex>
-        </v-layout>
-
-        <v-layout row>
-            <v-flex>
-                <rule
-                        v-for="(rule, index) in rules" ref="rules"
-                        :options="options" :key="rule" @delete-rule="deleteRule(index)">
-                </rule>
-                <and-or
-                        class="and-or-offset"
-                        v-for="(group, index) in groups" ref="groups"
-                        :options="options" :key="group" @delete-group="deleteGroup(index)">
-                </and-or>
-            </v-flex>
-        </v-layout>
+                <v-layout row>
+                    <v-flex>
+                        <rule
+                                v-for="(rule, index) in rules" ref="rules"
+                                :options="options" :key="rule" @delete-rule="deleteRule(index)">
+                        </rule>
+                        <and-or
+                                class="and-or-offset"
+                                v-for="(group, index) in groups" ref="groups"
+                                :options="options" :key="group" @delete-group="deleteGroup(index)">
+                        </and-or>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </div>
     </div>
 </template>
 
@@ -153,12 +157,12 @@
 
 <style>
     .and-or-template {
-        padding: 8px 8px 68px 8px;
+        padding: 8px 30px 68px 8px;
         position: relative;
         border-radius: 3px;
         border: 1px solid #6d77b8;
         border-top: 3px solid #d2d6de;
-        margin-bottom: 20px;                        /* can be removed later */
+        margin-bottom: 20px; /* can be removed later */
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         border-top-color: #6d77b8;
     }
@@ -167,7 +171,7 @@
     .and-or-template:after {
         content: '';
         position: absolute;
-        left: -17px;
+        left: -26px;
         width: 16px;
         height: calc(50% + 18px);
         border-color: #c0c5e2;
@@ -175,7 +179,7 @@
     }
 
     .and-or-template:before {
-        top: -18px;
+        top: -23px;
         border-width: 0 0 2px 2px;
     }
 
@@ -195,6 +199,7 @@
     }
 
     .and-or-offset {
-        margin-left: 30px;      /* child box */
+        margin-left: 30px; /* child box */
+        margin-top: 40px;
     }
 </style>

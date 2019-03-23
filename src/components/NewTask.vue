@@ -109,7 +109,7 @@
                                         <v-flex xs6 pa-0>
                                             <v-layout row wrap>
                                                 <v-flex xs12 pa-0 ma-0>
-                                                    <v-text-field label="Task Name"></v-text-field>
+                                                    <v-text-field label="Task Name" v-model="taskName"></v-text-field>
                                                 </v-flex>
                                                 <v-flex xs12 pa-0 ma-0>
                                                     <v-select v-bind:items="frequencies"
@@ -129,7 +129,7 @@
 
 
                                 <v-btn flat @click.native="stepper = 2">Previous</v-btn>
-                                <v-btn color="primary" @click.prevent="submit">Finish</v-btn>
+                                <v-btn color="primary" @click="handleStep3">Finish</v-btn>
                             </v-stepper-content>
                         </v-stepper-items>
                     </v-stepper>
@@ -299,6 +299,36 @@
             handleStep2() {
                 this.taskQuery = this.$refs.andOr.queryFormStatus();
                 this.stepper = 3;
+            },
+            handleStep3() {
+                console.log(this.taskName)
+
+                const axiosInstance = axios.create({
+                    baseURL: 'http://localhost:5000',
+                    timeout: 25000,
+                    headers: {'Authorization': 'Good is the enemy of great'}
+                })
+
+
+                axiosInstance.post('/addTask', {
+                    taskTargetURL: this.taskTargetURL,
+                    taskTargetId: this.taskTargetId,
+                    taskQuery: this.taskQuery,
+                    taskName: this.taskName,
+                    taskFreq: this.taskFreq,
+                    taskNotificationType: this.taskNotificationType,
+                    taskEmail: this.taskEmail,
+                })
+                    .then((response) => {
+                        // server return something
+                        console.log(response.data)
+                    })
+                    .catch((error) => {
+                        // TODO: action for exceptions?
+                        /* eslint-disable no-console */
+                        console.log(error);
+                        /* eslint-enable no-console */
+                    })
             }
         },
     }

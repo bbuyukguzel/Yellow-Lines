@@ -113,14 +113,14 @@
                                                 </v-flex>
                                                 <v-flex xs12 pa-0 ma-0>
                                                     <v-select v-bind:items="frequencies"
-                                                              label="Task Frequency"></v-select>
+                                                              label="Task Frequency" v-model="taskFreq"></v-select>
                                                 </v-flex>
                                                 <v-flex xs12 pa-0 ma-0>
                                                     <v-select v-bind:items="notificationTypes"
-                                                              label="Notification Type"></v-select>
+                                                              label="Notification Type" v-model="taskNotificationType"></v-select>
                                                 </v-flex>
                                                 <v-flex xs12 pa-0 ma-0>
-                                                    <v-text-field label="Email"></v-text-field>
+                                                    <v-text-field label="Email" v-model="taskEmail"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>

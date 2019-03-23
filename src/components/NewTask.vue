@@ -1,6 +1,6 @@
 <template>
     <v-app id="inspire" dark>
-        <navigation-component/>
+        <navigation-component ref="ref_nav"></navigation-component>
 
         <v-container grid-list-xl>
             <v-layout row wrap>
@@ -30,9 +30,9 @@
                             <v-stepper-content step="1">
                                 <form id="form">
                                     <v-text-field
-                                            v-model="targetURL"
-                                            id="targetURL"
-                                            name="targetURL"
+                                            v-model="taskTargetURL"
+                                            id="taskTargetURL"
+                                            name="taskTargetURL"
                                             :error-messages="nameErrors"
                                             label="URL"
                                             v-on:click="clear"
@@ -88,23 +88,51 @@
                                     <v-spacer></v-spacer>
 
                                     <v-btn flat @click.native="stepper = 1">Previous</v-btn>
-                                    <v-btn color="primary" @click.native="stepper = 3">Continue</v-btn>
+                                    <v-btn color="primary" @click="handleStep2">Continue</v-btn>
                                 </v-stepper-content>
                             </div>
 
                             <!-- Step 3 -->
                             <v-stepper-content step="3">
-                                <v-text-field label="Task Name"></v-text-field>
-                                <v-select v-bind:items="frequencies" label="Task Frequency"></v-select>
-                                <v-select v-bind:items="notificationTypes" label="Notification Type"></v-select>
-                                <v-text-field label="Email"></v-text-field>
+                                <v-container fluid grid-list-sm>
+                                    <v-layout row wrap>
+                                        <v-flex xs6>
+                                            <v-layout column>
+                                                <v-flex>
+                                                    adsfasdfasdf
+                                                </v-flex>
+                                                <v-flex>
+                                                    asdfasdfasd
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs6 pa-0>
+                                            <v-layout row wrap>
+                                                <v-flex xs12 pa-0 ma-0>
+                                                    <v-text-field label="Task Name"></v-text-field>
+                                                </v-flex>
+                                                <v-flex xs12 pa-0 ma-0>
+                                                    <v-select v-bind:items="frequencies"
+                                                              label="Task Frequency"></v-select>
+                                                </v-flex>
+                                                <v-flex xs12 pa-0 ma-0>
+                                                    <v-select v-bind:items="notificationTypes"
+                                                              label="Notification Type"></v-select>
+                                                </v-flex>
+                                                <v-flex xs12 pa-0 ma-0>
+                                                    <v-text-field label="Email"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+
 
                                 <v-btn flat @click.native="stepper = 2">Previous</v-btn>
                                 <v-btn color="primary" @click.prevent="submit">Finish</v-btn>
                             </v-stepper-content>
                         </v-stepper-items>
                     </v-stepper>
-
                 </v-flex>
             </v-layout>
         </v-container>
@@ -124,7 +152,7 @@
     export default {
         name: "NewTask",
         validations: {
-            targetURL: {required, url: url},
+            taskTargetURL: {required, url: url},
         },
         components: {
             'navigation-component': Navigation,
@@ -133,15 +161,27 @@
         },
         data() {
             return {
-                timeout: 25000,
-                targetURL: '',
+                // input
+                taskTargetURL: '',
+                taskTargetId: '',
+                taskQuery: {},
+                taskName: '',
+                taskFreq: '',
+                taskNotificationType: '',
+                taskEmail: '',
+
+                // output
                 mirrorURL: '',
+                response: [],
+
+                // variables
+                timeout: 25000,
                 stepper: 0,
                 dialogLoader: false,
                 dialogTimeout: false,
-                response: [],
-                targetId: '',
-                query: {},
+                isFirst: true,
+
+                // constants
                 frequencies: ['15m', '30m', '1h', '6h', '12h', '24h'],
                 notificationTypes: [{text: 'Email'}, {text: 'Push Notification (coming soon)', disabled: true}],
                 steps: [
@@ -190,16 +230,14 @@
                         id: '$'
                     }]
                 },
-                isFirst: true
             }
-
         },
         computed: {
             nameErrors() {
                 const errors = []
-                if (!this.$v.targetURL.$dirty) return errors
-                !this.$v.targetURL.url && errors.push('Please provide a valid URL')
-                !this.$v.targetURL.required && errors.push('URL is required.')
+                if (!this.$v.taskTargetURL.$dirty) return errors
+                !this.$v.taskTargetURL.url && errors.push('Please provide a valid URL')
+                !this.$v.taskTargetURL.required && errors.push('URL is required.')
                 return errors
             },
         },
@@ -221,7 +259,7 @@
                         headers: {'Authorization': 'Good is the enemy of great'}
                     })
 
-                    axiosInstance.post('/generate-mirror', {url: this.targetURL})
+                    axiosInstance.post('/generate-mirror', {url: this.taskTargetURL})
                         .then((response) => {
                             // server return something
                             this.dialogLoader = false
@@ -241,19 +279,27 @@
             },
             clear() {
                 this.$v.$reset()
-                this.targetURL = ''
+                this.taskTargetURL = ''
             },
             queryToJSON() {
                 /* eslint-disable no-console */
-                console.log(JSON.stringify(this.query, null, 2))
+                console.log(JSON.stringify(this.taskQuery, null, 2))
                 /* eslint-enable no-console */
             },
             selectedDiv: function (event) {
-                this.targetId = event.currentTarget.id;
+                this.taskTargetId = event.currentTarget.id;
                 /* eslint-disable no-console */
-                console.log()
+                console.log(this.taskTargetId)
                 /* eslint-enable no-console */
             },
+            getEmail() {
+                console.log("xxxxx")
+                return this.$refs.deneme.profile.email;
+            },
+            handleStep2() {
+                this.taskQuery = this.$refs.andOr.queryFormStatus();
+                this.stepper = 3;
+            }
         },
     }
 </script>

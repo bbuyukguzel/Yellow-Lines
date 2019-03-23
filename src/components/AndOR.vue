@@ -159,7 +159,6 @@
 
 <style>
     .and-or-template {
-        padding: 8px 30px 68px 8px;
         position: relative;
         border-radius: 3px;
         border: 1px solid #6d77b8;

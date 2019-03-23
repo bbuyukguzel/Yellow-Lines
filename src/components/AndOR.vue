@@ -3,7 +3,7 @@
         <div class="and-or-top">
             <v-container fluid>
                 <v-layout row>
-                    <v-flex xs2 class="text-sm-left pa-0">
+                    <v-flex grow class="text-sm-left pa-0">
                         <v-chip small label :color=" isAnd ? 'deep-purple lighten-1' : 'deep-purple lighten-4' "
                                 @click.prevent="clickAnd">And
                         </v-chip>
@@ -11,13 +11,15 @@
                                 @click.prevent="clickOr">Or
                         </v-chip>
                     </v-flex>
-                    <v-flex xs7 class="text-sm-right"></v-flex>
-                    <v-flex xs3 class="text-sm-right pa-0">
+                    <v-flex grow class="text-sm-right pa-0">
                         <v-chip small label color="deep-purple lighten-1" @click.prevent="addRule">
                             +add
                         </v-chip>
                         <v-chip small label color="deep-purple lighten-1" @click.prevent="addGroup">
                             +add(group)
+                        </v-chip>
+                        <v-chip v-if="!isFirst" small label color="deep-purple lighten-1" @click.prevent="deleteSelf()">
+                            delete
                         </v-chip>
                     </v-flex>
                 </v-layout>

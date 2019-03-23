@@ -1,18 +1,14 @@
 <template>
     <v-layout row justify-space-between and-or-rule>
         <v-flex class="pa-0" xs3>
-            <v-select v-model="key" :items="options.keys" item-text="name" value="id" label="FIX HERE"></v-select>
-        </v-flex>
-
-        <v-flex class="pa-0" xs3>
             <v-select v-model="operator" :items="options.operators" item-text="name" value="id"
-                      label="FIX HERE"></v-select>
+                      label="Choose Operator"></v-select>
         </v-flex>
 
         <v-flex class="pa-0" xs3>
             <v-text-field label="Value" v-model="value"></v-text-field>
         </v-flex>
-        <v-btn fab  class="pa-0" small dark color="deep-purple lighten-1" @click.prevent="deleteSelf()">
+        <v-btn fab class="pa-0" small dark color="deep-purple lighten-1" @click.prevent="deleteSelf()">
             <v-icon dark>remove</v-icon>
         </v-btn>
     </v-layout>

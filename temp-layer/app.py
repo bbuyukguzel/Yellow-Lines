@@ -6,6 +6,7 @@ from flask import jsonify
 import subprocess
 from tempfile import NamedTemporaryFile
 from random import randint
+from pymongo import MongoClient
 
 app = Flask(__name__) #create the Flask app
 CORS(app)
@@ -46,6 +47,13 @@ def addTask():
     data = request.data
     dataDict = json.loads(data)
     print(dataDict)
+
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client['yellowdb']
+    col = db['yellowcollection']
+
+    x = col.insert_one(dataDict)
+    print(x)
 
     return 'Talk is cheap'
 

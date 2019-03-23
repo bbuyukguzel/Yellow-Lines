@@ -41,5 +41,14 @@ def generate_mirror():
     return jsonify(ret)
 
 
+@app.route('/addTask', methods=['GET', 'POST'])
+def addTask():
+    data = request.data
+    dataDict = json.loads(data)
+    print(dataDict)
+
+    return 'Talk is cheap'
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

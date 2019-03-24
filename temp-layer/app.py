@@ -6,13 +6,16 @@ from flask import jsonify
 import subprocess
 from tempfile import NamedTemporaryFile
 from random import randint
-from pymongo import MongoClient
+from DatabaseOperations import DatabaseOperations
+
 
 app = Flask(__name__) #create the Flask app
 CORS(app)
 
 tmpDIR = './static/mirrors'
 puppeteerDIR = '../puppeteer-jobs/generate-mirror.js'
+
+db_ops = DatabaseOperations()
 
 
 @app.route('/generate-mirror', methods=['GET', 'POST'])
@@ -42,18 +45,11 @@ def generate_mirror():
     return jsonify(ret)
 
 
-@app.route('/addTask', methods=['GET', 'POST'])
-def addTask():
-    data = request.data
-    dataDict = json.loads(data)
-    print(dataDict)
-
-    client = MongoClient('mongodb://localhost:27017/')
-    db = client['yellowdb']
-    col = db['yellowcollection']
-
-    x = col.insert_one(dataDict)
-    print(x)
+@app.route('/addTask', methods=['POST'])
+def add_task():
+    if request.is_json:
+        received_data = request.get_json()
+        db_ops.insert_new_task(received_data)
 
     return 'Talk is cheap'
 

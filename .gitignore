@@ -20,10 +20,10 @@ yarn-error.log*
 *.sln
 *.sw*
 
-temp-layer/venv/
+server/venv/
 
-temp-layer/__pycache__/
+server/__pycache__/
 
-temp-layer/static/mirrors/
+server/static/mirrors/
 
 auth_config\.json

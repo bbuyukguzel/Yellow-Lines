@@ -52,8 +52,7 @@
                                     <v-dialog v-model="dialogTimeout" width="300">
                                         <v-card color="primary" dark>
                                             <v-card-text>
-                                                Timeout Error: Mirror cannot be generated within {{ timeout }}
-                                                milliseconds
+                                                {{ dialogMessage }}
                                             </v-card-text>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
@@ -117,7 +116,8 @@
                                                 </v-flex>
                                                 <v-flex xs12 pa-0 ma-0>
                                                     <v-select v-bind:items="notificationTypes"
-                                                              label="Notification Type" v-model="taskNotificationType"></v-select>
+                                                              label="Notification Type"
+                                                              v-model="taskNotificationType"></v-select>
                                                 </v-flex>
                                                 <v-flex xs12 pa-0 ma-0>
                                                     <v-text-field label="Email" v-model="taskEmail"></v-text-field>
@@ -180,6 +180,7 @@
                 dialogLoader: false,
                 dialogTimeout: false,
                 isFirst: true,
+                dialogMessage: '',
 
                 // constants
                 frequencies: ['15m', '30m', '1h', '6h', '12h', '24h'],
@@ -241,7 +242,6 @@
                 return errors
             },
         },
-
         methods: {
             validateForm: function (event) {
                 this.$v.$touch()
@@ -255,7 +255,7 @@
 
                     const axiosInstance = axios.create({
                         baseURL: 'http://localhost:5000',
-                        timeout: 25000,
+                        timeout: this.timeout,
                         headers: {'Authorization': 'Good is the enemy of great'}
                     })
 
@@ -268,47 +268,43 @@
                             this.stepper++
                         })
                         .catch((error) => {
+                            this.dialogMessage = error
                             this.dialogLoader = false
                             this.dialogTimeout = true
-                            // TODO: action for exceptions?
-                            /* eslint-disable no-console */
-                            console.log(error);
-                            /* eslint-enable no-console */
                         })
                 }
-            },
+            }
+            ,
             clear() {
                 this.$v.$reset()
                 this.taskTargetURL = ''
-            },
+            }
+            ,
             queryToJSON() {
                 /* eslint-disable no-console */
                 console.log(JSON.stringify(this.taskQuery, null, 2))
                 /* eslint-enable no-console */
-            },
+            }
+            ,
             selectedDiv: function (event) {
                 this.taskTargetId = event.currentTarget.id;
                 /* eslint-disable no-console */
                 console.log(this.taskTargetId)
                 /* eslint-enable no-console */
-            },
-            getEmail() {
-                console.log("xxxxx")
-                return this.$refs.deneme.profile.email;
-            },
+            }
+            ,
             handleStep2() {
                 this.taskQuery = this.$refs.andOr.queryFormStatus();
+                this.email = this.$refs.deneme.profile.email;
                 this.stepper = 3;
-            },
+            }
+            ,
             handleStep3() {
-                console.log(this.taskName)
-
                 const axiosInstance = axios.create({
                     baseURL: 'http://localhost:5000',
                     timeout: 25000,
                     headers: {'Authorization': 'Good is the enemy of great'}
                 })
-
 
                 axiosInstance.post('/addTask', {
                     taskTargetURL: this.taskTargetURL,
@@ -330,7 +326,8 @@
                         /* eslint-enable no-console */
                     })
             }
-        },
+        }
+        ,
     }
 </script>
 

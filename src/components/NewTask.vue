@@ -167,7 +167,7 @@
                 taskQuery: {},
                 taskName: '',
                 taskFreq: '',
-                taskNotificationType: '',
+                taskNotificationType: 'Email',
                 taskEmail: '',
 
                 // output
@@ -295,7 +295,7 @@
             ,
             handleStep2() {
                 this.taskQuery = this.$refs.andOr.queryFormStatus();
-                this.email = this.$refs.deneme.profile.email;
+                this.taskEmail = this.$refs.ref_nav.profile.email;
                 this.stepper = 3;
             }
             ,

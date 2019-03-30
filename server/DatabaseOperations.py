@@ -35,4 +35,3 @@ class DatabaseOperations:
     @connection_required
     def insert_new_task(self, json_data):
         self._collection.insert_one(json_data)
-        # TODO: if insertion success, add this task as periodic cloud function

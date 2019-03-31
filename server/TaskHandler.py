@@ -3,13 +3,14 @@ import time
 
 
 class TaskHandler:
-    def __init__(self, min_period=5):
+    # TODO: min_period can be obtained from config file
+    def __init__(self, min_period=15):
         self._queue = []
         self._thread = threading.Thread(name='Task Handler Thread', target=self.tick)
         self._is_queue_modified = False
-        self._required_keys = {'name', 'scheduled_time', 'period'}
+        self._required_keys = {'task_id', 'scheduled_time', 'period', 'call'}
         self._min_period = min_period
-        self._last_sorted_time = None
+        self._last_sorted_time = 0
 
     def insert_task(self, task_dict):
         # validation of task_dict
@@ -40,7 +41,11 @@ class TaskHandler:
         while True:
             for task in self.get_current_cycle_tasks():
                 try:
+                    # dispatch function
+                    task['call']()
+                    # update schedule time for next execution
                     task['scheduled_time'] = task['scheduled_time'] + task['period']
+                    # move task to end of queue
                     self._queue.append(self._queue.pop(0))
                 except StopIteration:
                     pass

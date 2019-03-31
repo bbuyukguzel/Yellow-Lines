@@ -16,19 +16,8 @@ tmpDIR = './static/mirrors'
 puppeteerDIR = '../puppeteer-jobs/generate-mirror.js'
 
 db_ops = DatabaseOperations()
-th = TaskHandler()
-th.start_task_handler()
-
-def func1():
-    print('func #1')
-
-def func2():
-    print('func #2')
-
-
-th.insert_task( {'name': 'task1', 'period': 15, 'scheduled_time':time.time()+10} )
-th.insert_task( {'name': 'task2', 'period': 10, 'scheduled_time':time.time()+2} )
-th.insert_task( {'name': 'task3', 'period': 30, 'scheduled_time':time.time()+10} )
+periodic_task_handler = TaskHandler()
+periodic_task_handler.start_task_handler()
 
 
 @app.route('/generate-mirror', methods=['GET', 'POST'])
@@ -58,14 +47,33 @@ def generate_mirror():
     return jsonify(ret)
 
 
-@app.route('/addTask', methods=['POST'])
+@app.route('/add-task', methods=['POST'])
 def add_task():
     if request.is_json:
         received_data = request.get_json()
-        db_ops.insert_new_task(received_data)
-        # TODO: if insertion success, add this task as periodic cloud function
+        task_id = db_ops.insert_new_task(received_data)
+
+        if task_id is not None:
+            task = {'task_id': task_id,
+                    'period:': received_data['taskFreq'],
+                    'call': gcf_part_one,
+                    'scheduled_time': time.time()
+                    }
+            periodic_task_handler(task)
 
     return 'Talk is cheap'
+
+
+@app.route('/gcf-part-one', methods=['POST'])
+def gcf_part_one():
+    # get gcf's request for part one
+    pass
+
+
+@app.route('/gcf-part-two', methods=['POST'])
+def gcf_part_two():
+    # get gcf's request for part two
+    pass
 
 
 if __name__ == '__main__':

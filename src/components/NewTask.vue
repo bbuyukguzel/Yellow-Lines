@@ -306,7 +306,7 @@
                     headers: {'Authorization': 'Good is the enemy of great'}
                 })
 
-                axiosInstance.post('/addTask', {
+                axiosInstance.post('/add-task', {
                     taskTargetURL: this.taskTargetURL,
                     taskTargetId: this.taskTargetId,
                     taskQuery: this.taskQuery,

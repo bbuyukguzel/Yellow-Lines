@@ -42,7 +42,7 @@ class TaskHandler:
             for task in self.get_current_cycle_tasks():
                 try:
                     # dispatch function
-                    task['call']()
+                    task['call'](task)
                     # update schedule time for next execution
                     task['scheduled_time'] = task['scheduled_time'] + task['period']
                     # move task to end of queue

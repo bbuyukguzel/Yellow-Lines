@@ -55,17 +55,17 @@ def add_task():
 
         if task_id is not None:
             task = {'task_id': task_id,
-                    'period:': received_data['taskFreq'],
+                    'scheduled_time': time.time(),
+                    'period': int(received_data['taskFreq']),
                     'call': gcf_part_one,
-                    'scheduled_time': time.time()
                     }
-            periodic_task_handler(task)
+            periodic_task_handler.insert_task(task)
 
     return 'Talk is cheap'
 
 
 @app.route('/gcf-part-one', methods=['POST'])
-def gcf_part_one():
+def gcf_part_one(data):
     # get gcf's request for part one
     pass
 

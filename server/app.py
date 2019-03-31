@@ -65,9 +65,9 @@ def add_task():
 
 
 @app.route('/gcf-part-one', methods=['POST'])
-def gcf_part_one(data):
-    # get gcf's request for part one
-    pass
+def gcf_part_one(task_data):
+    required_data = db_ops.get_data(task_data['task_id'], 'taskTargetURL', 'taskTargetId')
+    print(required_data)
 
 
 @app.route('/gcf-part-two', methods=['POST'])

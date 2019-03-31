@@ -41,3 +41,18 @@ class DatabaseOperations:
             print('Task cannot be inserted to database')
             return None
 
+    @connection_required
+    def get_data(self, object_id, *keys):
+        ret = {}
+        document = self._collection.find_one({'_id': object_id})
+
+        if document is not None:
+            for key in keys:
+                if key in document:
+                    ret[key] = document[key]
+                else:
+                    print('Given key {} cannot be found in {}'.format(key, document))
+        else:
+            print('Given object {} cannot be found'.format(object_id))
+
+        return ret

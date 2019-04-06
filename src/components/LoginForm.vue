@@ -139,7 +139,7 @@
                 }
 
                 this.$store.dispatch('auth/login', formData).then(() => {
-                    this.$router.push('/newTask');
+                    this.$router.push('/dashboard');
                 });
             }
         },

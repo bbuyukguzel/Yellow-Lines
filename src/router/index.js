@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Homepage from '@/components/Homepage.vue'
+import Dashboard from '@/components/Dashboard.vue'
 import Test from '@/components/Test.vue'
 import Callback from '@/components/Callback';
 import Profile from "@/components/Profile.vue";
@@ -17,9 +18,10 @@ const router = new Router({
     routes: [
         {path: '/', component: Homepage},
         {path: '/callback', component: Callback},
-        {path: '/newTask', component: NewTask, meta: { requiresAuth: true }},
+        {path: '/newTask', component: NewTask},
         {path: '/profile', component: Profile},
         {path: '/settings', component: Homepage},
+        {path: '/dashboard', component: Dashboard, meta: { requiresAuth: true }},
         {path: '/login', component: Test},
         {path: '*', component: Test}
     ],
@@ -40,7 +42,7 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
         if (token) {
             axiosAuth.post('/api/v1/login').then(() => {
-                next('/newTask');
+                next('/dashboard');
             }).catch(() => {
                 next();
             });

@@ -1,16 +1,21 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import time
 import json
-from flask import jsonify
 import subprocess
 from tempfile import NamedTemporaryFile
 from random import randint
+import datetime
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from DatabaseOperations import DatabaseOperations
 from TaskHandler import TaskHandler
 
 app = Flask(__name__) #create the Flask app
+
 CORS(app)
+app.config['SECRET_KEY'] = 'securi'
+jwt = JWTManager(app)
+
 
 tmpDIR = './static/mirrors'
 puppeteerDIR = '../puppeteer-jobs/generate-mirror.js'
@@ -74,6 +79,59 @@ def gcf_part_one(task_data):
 def gcf_part_two():
     # get gcf's request for part two
     pass
+
+
+@jwt.expired_token_loader
+def my_expired_token_callback(expired_token):
+    token_type = expired_token['type']
+    return jsonify({
+        'status': 401,
+        'sub_status': 42,
+        'msg': 'The {} token has expired'.format(token_type)
+    }), 401
+
+
+@app.route('/api/v1/register', methods=['POST'])
+def register():
+    received_data = request.get_json()
+    username = received_data['username']
+    password = received_data['password']
+    db_ops.add_user(username, password)
+    return jsonify({'message': 'You registered!'})
+
+
+@app.route('/api/v1/login', methods=['POST'])
+def login():
+    received_data = request.get_json()
+    username = received_data['username']
+    password = received_data['password']
+    access_token = ''
+
+    if not username:
+        return jsonify({"msg": "Missing username parameter"}), 400
+    if not password:
+        return jsonify({"msg": "Missing password parameter"}), 400
+
+    user = db_ops.get_user_details(username)
+
+    if user is None:
+        return jsonify({'success': False, 'message': 'Bad username or password'}), 401
+
+    access_token = create_access_token(identity=username)
+    return jsonify({'success': True, 'token': access_token}), 200
+
+
+@app.route('/verify-token', methods=['POST'])
+@jwt_required
+def verify_token():
+    return jsonify({'success': True}), 200
+
+
+@app.route('/protected', methods=['GET'])
+@jwt_required
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
 
 
 if __name__ == '__main__':

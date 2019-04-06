@@ -9,6 +9,7 @@ class DatabaseOperations:
         self._database = ''
         self._collection = ''
         self.__establish_connection()
+        self.__mockdb = {'admin': 'admin'}
 
     def __establish_connection(self):
         self._client = MongoClient('mongodb://localhost:27017/')
@@ -56,3 +57,12 @@ class DatabaseOperations:
             print('Given object {} cannot be found'.format(object_id))
 
         return ret
+
+    def add_user(self, email, password):
+        self.__mockdb[email] = password
+
+    def get_user_details(self, email):
+        if email in self.__mockdb:
+            return self.__mockdb[email]
+        else:
+            return None

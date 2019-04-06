@@ -9,10 +9,10 @@
                         <v-tabs centered color="cyan" dark icons-and-text>
                             <v-tabs-slider color="yellow"></v-tabs-slider>
 
-                            <v-tab href="#tab-1"> Register</v-tab>
-                            <v-tab href="#tab-2"> Login</v-tab>
+                            <v-tab> Register</v-tab>
+                            <v-tab> Login</v-tab>
 
-                            <v-tab-item value="tab-1">
+                            <v-tab-item>
                                 <v-card flat>
                                     <v-card-text>
 
@@ -43,7 +43,7 @@
                                 </v-card>
                             </v-tab-item>
 
-                            <v-tab-item value="tab-2">
+                            <v-tab-item>
                                 <v-card flat>
                                     <v-card-text>
 
@@ -113,18 +113,10 @@
                 this.password = ''
             },
             handleRegister() {
-                let formData = {
-                    email: this.email,
-                    password: this.password,
-                }
-
-                const axiosInstance = axios.create({
-                    baseURL: 'http://localhost:5000',
-                    timeout: 25000,
-                    headers: {'Authorization': 'Good is the enemy of great'}
+                axios.post('/api/v1/register', {
+                    'email': this.email,
+                    'password': this.password
                 })
-
-                axiosInstance.post('/api/v1/register', formData)
                     .then((response) => {
                         // server return something
                         console.log(response.data)
@@ -138,7 +130,7 @@
             },
             handleLogin() {
                 let formData = {
-                    username: this.username,
+                    email: this.email,
                     password: this.password,
                 }
 

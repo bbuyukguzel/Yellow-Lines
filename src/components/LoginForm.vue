@@ -27,12 +27,14 @@
                                             ></v-text-field>
                                             <v-text-field
                                                     v-model="password"
+                                                    :append-icon="showPasswordText ? 'visibility' : 'visibility_off'"
+                                                    :type="showPasswordText ? 'text' : 'password'"
                                                     :error-messages="passwordErrors"
-                                                    :counter="10"
                                                     label="Password"
                                                     required
                                                     @input="$v.password.$touch()"
                                                     @blur="$v.password.$touch()"
+                                                    @click:append="showPasswordText = !showPasswordText"
                                             ></v-text-field>
 
                                             <v-btn @click="handleRegister">submit</v-btn>
@@ -58,12 +60,14 @@
                                             ></v-text-field>
                                             <v-text-field
                                                     v-model="password"
+                                                    :append-icon="showPasswordText ? 'visibility' : 'visibility_off'"
+                                                    :type="showPasswordText ? 'text' : 'password'"
                                                     :error-messages="passwordErrors"
-                                                    :counter="10"
                                                     label="Password"
                                                     required
                                                     @input="$v.password.$touch()"
                                                     @blur="$v.password.$touch()"
+                                                    @click:append="showPasswordText = !showPasswordText"
                                             ></v-text-field>
 
                                             <v-btn @click="handleLogin">submit</v-btn>
@@ -101,18 +105,17 @@
                 email: '',
                 password: '',
                 invalidCredentials: false,
+                showPasswordText: false,
             }
         },
         methods: {
-            submit() {
-                this.$v.$touch()
-            },
             clear() {
                 this.$v.$reset()
                 this.email = ''
                 this.password = ''
             },
             handleRegister() {
+                this.$v.$touch()
                 axios.post('/api/v1/register', {
                     'email': this.email,
                     'password': this.password
@@ -129,6 +132,7 @@
                     })
             },
             handleLogin() {
+                this.$v.$touch()
                 let formData = {
                     email: this.email,
                     password: this.password,

@@ -94,34 +94,39 @@ def my_expired_token_callback(expired_token):
 @app.route('/api/v1/register', methods=['POST'])
 def register():
     received_data = request.get_json()
-    if 'email' in received_data and 'password' in received_data:
-        email = received_data['email']
-        password = received_data['password']
-        if db_ops.get_user_details(email) is None:
-            db_ops.add_user(email, password)
-            return jsonify({'message': 'You registered!'}), 200
-        return jsonify({'message': 'This user already registered'}), 400
-    return jsonify({'message': 'Registration payload is not correct'}), 400
+
+    if 'email' not in received_data:
+        return jsonify({"message": "Missing email parameter"}), 400
+    if 'password' not in received_data:
+        return jsonify({"message": "Missing password parameter"}), 400
+
+    email = received_data['email']
+    password = received_data['password']
+
+    if not db_ops.is_user_exists(email):
+        db_ops.add_user(email, password)
+        return jsonify({'message': 'You registered!'}), 200
+    return jsonify({'message': 'This user already registered'}), 400
 
 
 @app.route('/api/v1/login', methods=['POST'])
 def login():
+    access_token = None
     received_data = request.get_json()
-    username = received_data['username']
+
+    if 'email' not in received_data:
+        return jsonify({"message": "Missing email parameter"}), 400
+    if 'password' not in received_data:
+        return jsonify({"message": "Missing password parameter"}), 400
+
+    email = received_data['email']
     password = received_data['password']
-    access_token = ''
-
-    if not username:
-        return jsonify({"msg": "Missing username parameter"}), 400
-    if not password:
-        return jsonify({"msg": "Missing password parameter"}), 400
-
-    user = db_ops.get_user_details(username)
+    user = db_ops.get_user_details(email, password)
 
     if user is None:
-        return jsonify({'success': False, 'message': 'Bad username or password'}), 401
+        return jsonify({'success': False, 'message': 'Bad email or password'}), 401
 
-    access_token = create_access_token(identity=username)
+    access_token = create_access_token(identity=str(user['_id']))
     return jsonify({'success': True, 'token': access_token}), 200
 
 

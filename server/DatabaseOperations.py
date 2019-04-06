@@ -67,5 +67,11 @@ class DatabaseOperations:
             return None
 
     @connection_required
-    def get_user_details(self, email):
-        return self._users.find_one({'email': email})
+    def is_user_exists(self, email):
+        if self._users.find_one({'email': email}) is None:
+            return False
+        return True
+
+    @connection_required
+    def get_user_details(self, email, password):
+        return self._users.find_one({'email': email, 'password': password})

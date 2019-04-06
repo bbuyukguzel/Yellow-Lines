@@ -2,17 +2,17 @@ import axios from 'axios'
 import router from '@/router'
 
 const state = {
-	username: null,
+    email: null,
 	token: null,
 };
 
 const mutations = {
 	authUser(state, userData) {
-		state.username = userData.username;
+		state.email = userData.email;
 		state.token = userData.token;
 	},
 	clearAuthData(state) {
-		state.username = null;
+		state.email = null;
 		state.token = null;
 	},
 };
@@ -26,14 +26,14 @@ const getters = {
 const actions = {
 	login: ({commit}, authData) => {
 		axios.post('/api/v1/login', {
-			username: authData.username,
+            email: authData.email,
 			password: authData.password,
 		}).then(response => {
 			let success = response.data.success;
 			if (success === true) {
-				commit('authUser', { username: authData.username, token: response.data.token });
+				commit('authUser', { email: authData.email, token: response.data.token });
 				localStorage.setItem('token', response.data.token);
-				localStorage.setItem('username', authData.username);
+				localStorage.setItem('email', authData.email);
 				router.replace('dashboard')
 			}
 			else {
@@ -45,17 +45,17 @@ const actions = {
 	},
 	autoLogin({commit}) {
 		let token = localStorage.getItem('token');
-		let username = localStorage.getItem('username');
+		let email = localStorage.getItem('email');
 
-		if (!token || !username) {
+		if (!token || !email) {
 			return;
 		}
 
-		commit('authUser', { username: username, token: token });
+		commit('authUser', { email: email, token: token });
 	},
 	logout: ({commit}) => {
 		commit('clearAuthData');
-		localStorage.removeItem('username');
+		localStorage.removeItem('email');
 		localStorage.removeItem('token');
 		router.replace('login');
 	},

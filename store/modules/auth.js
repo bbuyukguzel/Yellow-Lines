@@ -34,7 +34,7 @@ const actions = {
 				commit('authUser', { email: authData.email, token: response.data.token });
 				localStorage.setItem('token', response.data.token);
 				localStorage.setItem('email', authData.email);
-				router.replace('dashboard')
+				router.replace('newTask')
 			}
 			else {
 				console.log('Login error');

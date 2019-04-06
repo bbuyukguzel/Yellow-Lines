@@ -94,10 +94,14 @@ def my_expired_token_callback(expired_token):
 @app.route('/api/v1/register', methods=['POST'])
 def register():
     received_data = request.get_json()
-    username = received_data['username']
-    password = received_data['password']
-    db_ops.add_user(username, password)
-    return jsonify({'message': 'You registered!'})
+    if 'email' in received_data and 'password' in received_data:
+        email = received_data['email']
+        password = received_data['password']
+        if db_ops.get_user_details(email) is None:
+            db_ops.add_user(email, password)
+            return jsonify({'message': 'You registered!'}), 200
+        return jsonify({'message': 'This user already registered'}), 400
+    return jsonify({'message': 'Registration payload is not correct'}), 400
 
 
 @app.route('/api/v1/login', methods=['POST'])

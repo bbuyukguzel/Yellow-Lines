@@ -9,12 +9,12 @@ class DatabaseOperations:
         self._database = ''
         self._collection = ''
         self.__establish_connection()
-        self.__mockdb = {'admin': 'admin'}
 
     def __establish_connection(self):
         self._client = MongoClient('mongodb://localhost:27017/')
         self. _database = self._client['yellowdb']
-        self._collection = self._database['yellowcollection']
+        self._tasks = self._database['tasks']
+        self._users = self._database['users']
 
     def is_connected(self):
         try:
@@ -36,7 +36,7 @@ class DatabaseOperations:
     @connection_required
     def insert_new_task(self, json_data):
         try:
-            result = self._collection.insert_one(json_data)
+            result = self._tasks.insert_one(json_data)
             return result.inserted_id
         except errors.WriteError as err:
             print('Task cannot be inserted to database')
@@ -45,7 +45,7 @@ class DatabaseOperations:
     @connection_required
     def get_data(self, object_id, *keys):
         ret = {}
-        document = self._collection.find_one({'_id': object_id})
+        document = self._tasks.find_one({'_id': object_id})
 
         if document is not None:
             for key in keys:
@@ -58,11 +58,14 @@ class DatabaseOperations:
 
         return ret
 
+    @connection_required
     def add_user(self, email, password):
-        self.__mockdb[email] = password
-
-    def get_user_details(self, email):
-        if email in self.__mockdb:
-            return self.__mockdb[email]
-        else:
+        try:
+            result = self._users.insert_one({'email': email, 'password': password})
+        except errors.WriteError as err:
+            print('User cannot be inserted to database {}'.format(err))
             return None
+
+    @connection_required
+    def get_user_details(self, email):
+        return self._users.find_one({'email': email})

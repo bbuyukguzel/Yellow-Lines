@@ -82,6 +82,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     import {required, email} from 'vuelidate/lib/validators'
     import Navigation from "@/components/Navigation";
     import Footer from "@/components/Footer";
@@ -113,9 +114,27 @@
             },
             handleRegister() {
                 let formData = {
-                    username: this.username,
+                    email: this.email,
                     password: this.password,
                 }
+
+                const axiosInstance = axios.create({
+                    baseURL: 'http://localhost:5000',
+                    timeout: 25000,
+                    headers: {'Authorization': 'Good is the enemy of great'}
+                })
+
+                axiosInstance.post('/api/v1/register', formData)
+                    .then((response) => {
+                        // server return something
+                        console.log(response.data)
+                    })
+                    .catch((error) => {
+                        // TODO: action for exceptions?
+                        /* eslint-disable no-console */
+                        console.log(error);
+                        /* eslint-enable no-console */
+                    })
             },
             handleLogin() {
                 let formData = {

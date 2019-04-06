@@ -41,16 +41,16 @@
             <v-toolbar-title>Yellow Lines</v-toolbar-title>
             <v-spacer/>
             <v-toolbar-items>
-                <v-btn v-if="!isAuthenticated" flat @click.prevent="login">
+                <v-btn v-if="!isAuth" flat @click.prevent="login">
                     <v-icon left dark>person</v-icon>
                     Sign In
                 </v-btn>
                 <!-- only show if authenticated -->
-                <v-btn v-if="isAuthenticated" flat to="/profile">
+                <v-btn v-if="isAuth" flat to="/profile">
                     <v-icon left dark>account_circle</v-icon>
                     Profile
                 </v-btn>
-                <v-btn v-if="isAuthenticated" flat @click.prevent="logout">
+                <v-btn v-if="isAuth" flat @click.prevent="onLogout">
                     <v-icon left dark>exit_to_app</v-icon>
                     Sign Out
                 </v-btn>
@@ -61,6 +61,8 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
+
     export default {
         data() {
             return {
@@ -68,23 +70,14 @@
                 isAuthenticated: false
             }
         },
-        async created() {
-            try {
-                await this.$auth.renewTokens();
-            } catch (e) {
-                console.log(e);
-            }
+        computed: {
+            ...mapGetters('auth', {
+                isAuth: 'isAuthenticated',
+            })
         },
         methods: {
-            login() {
-                this.$auth.login();
-            },
-            logout() {
-                this.$auth.logOut();
-            },
-            handleLoginEvent(data) {
-                this.isAuthenticated = data.loggedIn;
-                this.profile = data.profile;
+            onLogout() {
+                this.$store.dispatch('auth/logout');
             }
         }
     }

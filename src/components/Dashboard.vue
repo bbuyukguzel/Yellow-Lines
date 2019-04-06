@@ -6,7 +6,7 @@
             <v-container fluid fill-height>
                 <v-layout justify-center align-center>
                     <v-flex shrink>
-                        <span>Dont't Panic [Dashboard]</span>
+                        <span>{{email}}</span>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -24,9 +24,15 @@
         name: "Dashboard",
         components: {
             'navigation-component': Navigation,
-            'footer-component' : Footer
+            'footer-component': Footer
         },
-        data: () => ({}),
+        data() {
+            return {
+                drawer: false,
+                isAuthenticated: false,
+                email: localStorage.getItem('email')
+            }
+        }
     }
 </script>
 

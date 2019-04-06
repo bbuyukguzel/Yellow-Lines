@@ -18,22 +18,6 @@
                         <v-list-tile-title>Add New Task</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
-                <v-list-tile to="/dashboard">
-                    <v-list-tile-action>
-                        <v-icon>dashboard</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>Dashboard</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile to="/test">
-                    <v-list-tile-action>
-                        <v-icon>settings</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>Settings</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
             </v-list>
         </v-navigation-drawer>
         <v-toolbar app fixed clipped-left>
@@ -41,12 +25,12 @@
             <v-toolbar-title>Yellow Lines</v-toolbar-title>
             <v-spacer/>
             <v-toolbar-items>
-                <v-btn v-if="!isAuth" flat @click.prevent="login">
+                <v-btn v-if="!isAuth" flat to="/test">
                     <v-icon left dark>person</v-icon>
                     Sign In
                 </v-btn>
                 <!-- only show if authenticated -->
-                <v-btn v-if="isAuth" flat to="/profile">
+                <v-btn v-if="isAuth" flat to="/dashboard">
                     <v-icon left dark>account_circle</v-icon>
                     Profile
                 </v-btn>

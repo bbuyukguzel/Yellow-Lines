@@ -94,14 +94,13 @@ def my_expired_token_callback(expired_token):
 @app.route('/api/v1/register', methods=['POST'])
 def register():
     received_data = request.get_json()
+    email = received_data.get('email')
+    password = received_data.get('password')
 
-    if 'email' not in received_data:
+    if not email:
         return jsonify({"message": "Missing email parameter"}), 400
-    if 'password' not in received_data:
+    if not password:
         return jsonify({"message": "Missing password parameter"}), 400
-
-    email = received_data['email']
-    password = received_data['password']
 
     if not db_ops.is_user_exists(email):
         db_ops.add_user(email, password)
@@ -111,18 +110,16 @@ def register():
 
 @app.route('/api/v1/login', methods=['POST'])
 def login():
-    access_token = None
     received_data = request.get_json()
+    email = received_data.get('email')
+    password = received_data.get('password')
 
-    if 'email' not in received_data:
+    if not email:
         return jsonify({"message": "Missing email parameter"}), 400
-    if 'password' not in received_data:
+    if not password:
         return jsonify({"message": "Missing password parameter"}), 400
 
-    email = received_data['email']
-    password = received_data['password']
     user = db_ops.get_user_details(email, password)
-
     if user is None:
         return jsonify({'success': False, 'message': 'Bad email or password'}), 401
 

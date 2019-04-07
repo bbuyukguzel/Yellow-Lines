@@ -18,8 +18,8 @@ const router = new Router({
     routes: [
         {path: '/', component: Homepage},
         {path: '/callback', component: Callback},
-        {path: '/newTask', component: NewTask},
-        {path: '/profile', component: Profile},
+        {path: '/newTask', component: NewTask, meta: { requiresAuth: true }},
+        {path: '/profile', component: Profile, meta: { requiresAuth: true }},
         {path: '/settings', component: Homepage},
         {path: '/dashboard', component: Dashboard, meta: { requiresAuth: true }},
         {path: '/login', component: Test},

@@ -10,7 +10,7 @@
                         <v-list-tile-title>Homepage</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
-                <v-list-tile to="/newTask">
+                <v-list-tile v-if="isAuth" to="/newTask">
                     <v-list-tile-action>
                         <v-icon>add</v-icon>
                     </v-list-tile-action>

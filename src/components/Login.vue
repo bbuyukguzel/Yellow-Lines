@@ -8,43 +8,8 @@
                     <v-flex shrink>
                         <v-tabs centered color="cyan" dark icons-and-text>
                             <v-tabs-slider color="yellow"></v-tabs-slider>
-
-                            <v-tab> Register</v-tab>
-                            <v-tab> Login</v-tab>
-
-                            <v-tab-item>
-                                <v-card flat>
-                                    <v-card-text>
-
-                                        <form>
-                                            <v-text-field
-                                                    v-model="email"
-                                                    :error-messages="emailErrors"
-                                                    label="E-mail"
-                                                    required
-                                                    @input="$v.email.$touch()"
-                                                    @blur="$v.email.$touch()"
-                                            ></v-text-field>
-                                            <v-text-field
-                                                    v-model="password"
-                                                    :append-icon="showPasswordText ? 'visibility' : 'visibility_off'"
-                                                    :type="showPasswordText ? 'text' : 'password'"
-                                                    :error-messages="passwordErrors"
-                                                    label="Password"
-                                                    required
-                                                    @input="$v.password.$touch()"
-                                                    @blur="$v.password.$touch()"
-                                                    @click:append="showPasswordText = !showPasswordText"
-                                            ></v-text-field>
-
-                                            <v-btn @click="handleRegister">submit</v-btn>
-                                            <v-btn @click="clear">clear</v-btn>
-                                        </form>
-
-                                    </v-card-text>
-                                </v-card>
-                            </v-tab-item>
-
+                            <v-tab>Login</v-tab>
+                            <v-tab>Register</v-tab>
                             <v-tab-item>
                                 <v-card flat>
                                     <v-card-text>
@@ -73,6 +38,34 @@
                                             <v-btn @click="handleLogin">submit</v-btn>
                                         </form>
 
+                                    </v-card-text>
+                                </v-card>
+                            </v-tab-item>
+                            <v-tab-item>
+                                <v-card flat>
+                                    <v-card-text>
+                                        <v-text-field
+                                                v-model="email"
+                                                :error-messages="emailErrors"
+                                                label="E-mail"
+                                                required
+                                                @input="$v.email.$touch()"
+                                                @blur="$v.email.$touch()"
+                                        ></v-text-field>
+                                        <v-text-field
+                                                v-model="password"
+                                                :append-icon="showPasswordText ? 'visibility' : 'visibility_off'"
+                                                :type="showPasswordText ? 'text' : 'password'"
+                                                :error-messages="passwordErrors"
+                                                label="Password"
+                                                required
+                                                @input="$v.password.$touch()"
+                                                @blur="$v.password.$touch()"
+                                                @click:append="showPasswordText = !showPasswordText"
+                                        ></v-text-field>
+
+                                        <v-btn @click="handleRegister">submit</v-btn>
+                                        <v-btn @click="clear">clear</v-btn>
                                     </v-card-text>
                                 </v-card>
                             </v-tab-item>

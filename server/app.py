@@ -4,13 +4,13 @@ import time
 import json
 import subprocess
 from tempfile import NamedTemporaryFile
-from random import randint
-import datetime
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from flask_bcrypt import Bcrypt
 from DatabaseOperations import DatabaseOperations
-from TaskHandler import TaskHandler
+#from TaskHandler import TaskHandler
 
-app = Flask(__name__) #create the Flask app
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 CORS(app)
 app.config['SECRET_KEY'] = 'securi'
@@ -21,8 +21,8 @@ tmpDIR = './static/mirrors'
 puppeteerDIR = '../puppeteer-jobs/generate-mirror.js'
 
 db_ops = DatabaseOperations()
-periodic_task_handler = TaskHandler()
-periodic_task_handler.start_task_handler()
+#periodic_task_handler = TaskHandler()
+#periodic_task_handler.start_task_handler()
 
 
 @app.route('/generate-mirror', methods=['GET', 'POST'])
@@ -103,7 +103,8 @@ def register():
         return jsonify({"message": "Missing password parameter"}), 400
 
     if not db_ops.is_user_exists(email):
-        db_ops.add_user(email, password)
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        db_ops.add_user(email, hashed_password)
         return jsonify({'message': 'You registered!'}), 200
     return jsonify({'message': 'This user already registered'}), 400
 
@@ -119,9 +120,12 @@ def login():
     if not password:
         return jsonify({"message": "Missing password parameter"}), 400
 
-    user = db_ops.get_user_details(email, password)
+    user = db_ops.get_user_details(email)
     if user is None:
-        return jsonify({'success': False, 'message': 'Bad email or password'}), 401
+        return jsonify({'success': False, 'message': 'User is not registered'}), 401
+
+    if not bcrypt.check_password_hash(user['password'], password):
+        return jsonify({'success': False, 'message': 'Wrong password'}), 401
 
     access_token = create_access_token(identity=str(user['_id']))
     return jsonify({'success': True, 'token': access_token}), 200

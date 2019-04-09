@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from pymongo import errors
 from functools import wraps
+import datetime
 
 
 class DatabaseOperations:
@@ -61,7 +62,12 @@ class DatabaseOperations:
     @connection_required
     def add_user(self, email, password):
         try:
-            result = self._users.insert_one({'email': email, 'password': password})
+            self._users.insert_one({'email': email,
+                                    'password': password,
+                                    'registration_date': datetime.datetime.utcnow(),
+                                    'is_verified': False,
+                                    'tasks': []
+                                    })
         except errors.WriteError as err:
             print('User cannot be inserted to database {}'.format(err))
             return None
@@ -73,5 +79,5 @@ class DatabaseOperations:
         return True
 
     @connection_required
-    def get_user_details(self, email, password):
-        return self._users.find_one({'email': email, 'password': password})
+    def get_user_details(self, email):
+        return self._users.find_one({'email': email})

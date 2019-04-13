@@ -57,15 +57,8 @@ def generate_mirror():
 def add_task():
     if request.is_json:
         received_data = request.get_json()
-        task_id = db_ops.insert_new_task(received_data)
-
-        if task_id is not None:
-            task = {'task_id': task_id,
-                    'scheduled_time': time.time(),
-                    'period': int(received_data['taskFreq']),
-                    'call': gcf_part_one,
-                    }
-            #periodic_task_handler.insert_task(task)
+        uid = get_jwt_identity()
+        task_id = db_ops.insert_new_task(uid, received_data)
 
     return 'Talk is cheap'
 

@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from pymongo import errors
 from functools import wraps
 import datetime
@@ -35,8 +36,10 @@ class DatabaseOperations:
         return wrap
 
     @connection_required
-    def insert_new_task(self, json_data):
+    def insert_new_task(self, uid, json_data):
         try:
+            # add user id into payload (uid is a ref to users collection)
+            json_data['uid'] = ObjectId(uid)
             result = self._tasks.insert_one(json_data)
             return result.inserted_id
         except errors.WriteError as err:

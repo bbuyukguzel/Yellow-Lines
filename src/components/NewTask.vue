@@ -144,6 +144,7 @@
 <script>
     import {required, url} from 'vuelidate/lib/validators'
     import axios from 'axios'
+    import axiosAuth from '@/api/axios-auth'
 
     import Navigation from "@/components/Navigation";
     import Footer from "@/components/Footer";
@@ -295,26 +296,19 @@
             ,
             handleStep2() {
                 this.taskQuery = this.$refs.andOr.queryFormStatus();
-                this.taskEmail = this.$refs.ref_nav.profile.email;
                 this.stepper = 3;
             }
             ,
             handleStep3() {
-                const axiosInstance = axios.create({
-                    baseURL: 'http://localhost:5000',
-                    timeout: 25000,
-                    headers: {'Authorization': 'Good is the enemy of great'}
-                })
-
-                axiosInstance.post('/add-task', {
+                const payload = {
                     taskTargetURL: this.taskTargetURL,
                     taskTargetId: this.taskTargetId,
                     taskQuery: this.taskQuery,
                     taskName: this.taskName,
                     taskFreq: this.taskFreq,
                     taskNotificationType: this.taskNotificationType,
-                    taskEmail: this.taskEmail,
-                })
+                }
+                axiosAuth.post('/add-task', payload)
                     .then((response) => {
                         // server return something
                         console.log(response.data)
@@ -325,6 +319,7 @@
                         console.log(error);
                         /* eslint-enable no-console */
                     })
+
             }
         }
         ,

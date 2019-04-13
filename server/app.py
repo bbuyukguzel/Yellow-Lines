@@ -53,6 +53,7 @@ def generate_mirror():
 
 
 @app.route('/add-task', methods=['POST'])
+@jwt_required
 def add_task():
     if request.is_json:
         received_data = request.get_json()
@@ -64,7 +65,7 @@ def add_task():
                     'period': int(received_data['taskFreq']),
                     'call': gcf_part_one,
                     }
-            periodic_task_handler.insert_task(task)
+            #periodic_task_handler.insert_task(task)
 
     return 'Talk is cheap'
 

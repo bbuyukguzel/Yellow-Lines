@@ -3,6 +3,7 @@ from bson.objectid import ObjectId
 from pymongo import errors
 from functools import wraps
 import datetime
+from random import randint
 
 
 class DatabaseOperations:
@@ -40,6 +41,8 @@ class DatabaseOperations:
         try:
             # add user id into payload (uid is a ref to users collection)
             json_data['uid'] = ObjectId(uid)
+            json_data['nextExecution'] = datetime.datetime.utcnow() + datetime.timedelta(seconds=randint(0, 40))
+            json_data['executions'] = []
             result = self._tasks.insert_one(json_data)
             return result.inserted_id
         except errors.WriteError as err:
@@ -47,7 +50,7 @@ class DatabaseOperations:
             return None
 
     @connection_required
-    def get_data(self, object_id, *keys):
+    def get_task_data(self, object_id, *keys):
         ret = {}
         document = self._tasks.find_one({'_id': object_id})
 
@@ -62,13 +65,22 @@ class DatabaseOperations:
 
         return ret
 
+    def get_tasks(self):
+        current_datetime = datetime.datetime.utcnow() + datetime.timedelta(seconds=15)
+        doc = self._tasks.find({'nextExecution': {'$lt': current_datetime}})
+        return list(doc)
+
+    def update_task(self, task_id, task_field, new_field_value):
+        ret = self._tasks.update_one({'_id': task_id}, {'$set': {task_field: new_field_value}})
+        print(ret)
+
     @connection_required
     def add_user(self, email, password):
         try:
             self._users.insert_one({'email': email,
                                     'password': password,
-                                    'registration_date': datetime.datetime.utcnow(),
-                                    'is_verified': False,
+                                    'registrationDate': datetime.datetime.utcnow(),
+                                    'isVerified': False,
                                     'tasks': []
                                     })
         except errors.WriteError as err:
